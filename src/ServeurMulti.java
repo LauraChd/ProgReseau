@@ -54,13 +54,9 @@ public class ServeurMulti {
                 // on continue la communication tant que la chaîne recue n'est pas "stop"
                 while (!str.equals("stop")) {
                     System.out.println(numClient + ". On a reçu : |" + str + "|");
-                    // sortie.writeUTF(str);
                     shareMessage(str, sortie);
-                    System.out.println("BLOQUE3");
                     // get la prochaine chaîne
-                    // entree = new BufferedReader(new InputStreamReader(so.getInputStream()));
                     str = entree.readLine(); // on lit ce qui arrive
-                    System.out.println("BLOQUE4");
                 }
                 while (!str.equals("stopOK")) {
                     System.out.println(numClient + ". Fin de communication demandée");
@@ -79,27 +75,17 @@ public class ServeurMulti {
 
     public static void shareMessage(String str, DataOutputStream currentClient) {
         List<DataOutputStream> listClients = ServeurMulti.listClients;
-        for (DataOutputStream sortie : listClients) {
+        for (int i = 0; i<listClients.size(); i++){ //DataOutputStream sortie : listClients) {
+            DataOutputStream sortie = listClients.get(i);
             if (sortie != currentClient) {
                 try {
+                    str = i + " => " + str;
                     sortie.writeUTF(str);
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
         }
 
     }
-
-    /*
-     * public static void (DataOutputStream sortie) {
-     * try {
-     * sortie.writeInt(0000000000000);
-     * } catch (IOException e) {
-     * // TODO Auto-generated catch block
-     * e.printStackTrace();
-     * }
-     * }
-     */
 }

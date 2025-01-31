@@ -37,9 +37,7 @@ public class Client {
                 threadSendMessage.start();
                 // Thread 2 (principal) pour l'ecoute du serveur
                 while (!end) {
-                    System.out.println("BLOQUE1");
                     readMessage(entree, sortie, end, so);
-                    System.out.println("BLOQUE2");
                 }
             } catch (UnknownHostException e) {
                 System.out.println(e);
@@ -54,48 +52,29 @@ public class Client {
 
     public static void sendMessage(Socket so, String serveur, String[] argu, int port,
             DataInputStream entree, PrintWriter sortie, Scanner scanner) {
-        // int strL; // et sa longueur reçue
         String input;
         // lecture de la chaîne
         System.out.println("Entrez le message à envoyer : (stop pour terminer la connexion)");
         input = scanner.nextLine();
-        // str = argu[2];
-        // try {
         // on continue à communiquer tant que le socket est ouvert (c'est le serveur qui
         // le ferme en premier)
         while (!end) {
             if (input.equals("stop")) {
                 end = true;
-                System.out.println("PREMIER IF");
             }
-            System.out.println("APRES IF1");
             sortie.println(input); // str); // on écrit la chaîne et le newline dans le canal de sortie
             if (!end) {
-                System.out.println("DEUXIEME IF");
-                // strL = entree.readInt(); // on lit l’entier qui arrive
-                System.out.println("DEUXIEME IF BIS");
-                // System.out.println("D’après le serveur la longueur de " + input /* str */ + "
-                // est ");
                 System.out.println("Entrez le message à envoyer : (stop pour terminer la connexion)");
                 input = scanner.nextLine();
-                System.out.println("DEUXIEME IF FIN");
             }
-            System.out.println("APRES IF BIS");
         }
-        // so.close(); // on ferme la connexion
-        /*
-         * } catch (IOException e) {
-         * System.out.println("Aucun serveur n’est rattaché au port ");
-         * }
-         */
     }
 
     public static void readMessage(DataInputStream entree, PrintWriter sortie, boolean end, Socket so) {
         try {
             if (!end) {
-                System.out.println("entrée dans readMessage");
                 String message = entree.readUTF();
-                System.out.println("Serveur says : " + message);
+                System.out.println(message);
                 if (message.equals("stop")) {
                     end = true;
                     sortie.println("stopOK");
