@@ -71,7 +71,7 @@ public class ControllerSnakeGame extends AbstractController {
                 public void actionPerformed(ActionEvent e) {
                     String selectedLayout = (String) layoutComboBox.getSelectedItem();
                     if (selectedLayout != null) {
-                        String newLayoutPath = "layouts/" + selectedLayout;
+                        String newLayoutPath = "src/snake/layouts/" + selectedLayout;
                         currentLayoutPath = newLayoutPath;
                         fenetre(newLayoutPath);//recréé fenêtre avec le nouveau layout
                     }
@@ -126,7 +126,7 @@ public class ControllerSnakeGame extends AbstractController {
 
     //récupère liste fichiers layout disponibles dans le dossier layouts
     private String[] getLayoutFiles() {
-        File layoutDirectory = new File("layouts");
+        File layoutDirectory = new File("src/snake/layouts");
         String[] layouts = layoutDirectory.list((dir, name) -> name.endsWith(".lay"));
         if (layouts == null || layouts.length == 0) {
             return new String[]{"Aucun layout trouvé"};

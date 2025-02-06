@@ -46,10 +46,10 @@ public class ViewCommand extends JPanel implements java.util.Observer{//la vue =
         JPanel panel3 = new JPanel(new GridLayout(1, 2));//situé en bas
 
         //PARTIE DU HAUT
-        Icon icone_restart = new ImageIcon("icons/icon_restart.png");
-        Icon icone_play = new ImageIcon("icons/icon_play.png");
-        Icon icone_step = new ImageIcon("icons/icon_step.png");
-        Icon icone_pause = new ImageIcon("icons/icon_pause.png");
+        Icon icone_restart = new ImageIcon("./src/snake/icons/icon_restart.png");
+        Icon icone_play = new ImageIcon("./src/snake/icons/icon_play.png");
+        Icon icone_step = new ImageIcon("./src/snake/icons/icon_step.png");
+        Icon icone_pause = new ImageIcon("./src/snake/icons/icon_pause.png");
 
         button1 = new JButton(icone_restart);
         button2 = new JButton(icone_play);

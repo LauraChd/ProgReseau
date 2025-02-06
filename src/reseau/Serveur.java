@@ -26,20 +26,13 @@ public class Serveur {
                 ecoute = new ServerSocket(port); // on crée le serveur
                 System.out.println("serveur mis en place ");
                 System.out.println("nom du serveur : " + ecoute.getInetAddress().getHostName());
-                //MISE EN ROUTE DU JEU
-                //String layoutPath = "layouts/alone.lay"; 
-                //String layoutPath = "layouts/aloneNoWall.lay"; 
-                //String layoutPath = "layouts/arena.lay"; 
+                //MISE EN ROUTE DU JEU 
                 String layoutPath = "src/snake/layouts/arenaNoWall.lay"; 
-                //String layoutPath = "layouts/small.lay"; 
-                //String layoutPath = "layouts/smallArena.lay"; 
-                //String layoutPath = "layouts/smallArenaNoWall.lay"; 
-                //String layoutPath = "layouts/smallNoWall.lay";
 
                 SnakeGame snakeGame = new SnakeGame(10000,new InputMap(layoutPath));
-                @SuppressWarnings("unused")
+                //@SuppressWarnings("unused")
                 ControllerSnakeGame controllerSnakeGame = new ControllerSnakeGame(snakeGame, layoutPath);
-                @SuppressWarnings("unused")
+                //@SuppressWarnings("unused")
                 ControllerSimpleGame c1 = new ControllerSimpleGame(snakeGame);
 
                 //ATTENTE DE CLIENTS
