@@ -64,7 +64,6 @@ public class Client {
             }
             sortie.println(input); // str); // on écrit la chaîne et le newline dans le canal de sortie
             if (!end) {
-                System.out.println("Entrez le message à envoyer : (stop pour terminer la connexion)");
                 input = scanner.nextLine();
             }
         }
