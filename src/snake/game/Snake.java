@@ -2,12 +2,14 @@ package snake.game;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import snake.utils.AgentAction;
 import snake.utils.ColorSnake;
 import snake.utils.Position;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 public class Snake {
     int score;
     int taille;

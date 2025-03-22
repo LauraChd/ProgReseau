@@ -2,6 +2,7 @@
   "turn" : 1,
   "time" : 1000,
   "snake_liste" : [ {
+    "type" : "Snake",
     "score" : 0,
     "taille" : 1,
     "position" : [ {
@@ -11,7 +12,7 @@
     "couleur" : "Green",
     "agentAction" : "MOVE_RIGHT",
     "strategie" : {
-      "@class" : "snake.game.StrategieClavier"
+      "type" : "StrategieClavier"
     },
     "is_invincible" : false,
     "is_sick" : false,
