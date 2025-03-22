@@ -6,6 +6,8 @@ public class StrategieAleatoire implements Strategie {
 
     Snake snake;
 
+    public StrategieAleatoire(){}
+
     public StrategieAleatoire(Snake snake){
         this.snake = snake;   
     }

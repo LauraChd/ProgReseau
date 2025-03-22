@@ -1,4 +1,5 @@
 package reseau;
+
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,30 +10,35 @@ de la chaîne de caractères que lui envoie un client. La chaîne envoyée se te
 
 public class ServeurMulti {
 
-    public static List<DataOutputStream> listClients = new ArrayList<>();
+    private static final int MAX_CLIENTS = 2;
+    private static List<Socket> clients = new ArrayList<>();
+    private static List<DataOutputStream> listClients = new ArrayList<>();
 
     public static void main(String[] argu) {
         int port; // le port d’écoute
         ServerSocket ecoute;
-        Socket so;
         int numClient = 1;
 
         if (argu.length == 1) { // lance le serveur avec son port
             try {
                 port = Integer.parseInt(argu[0]); // on récupère le port
                 ecoute = new ServerSocket(port); // on crée le serveur
-                System.out.println("Serveur mis en place ");
+                System.out.println("Serveur en attente de " + MAX_CLIENTS + " connexions");
 
-                while (true) {
+                while (clients.size() < MAX_CLIENTS) {
                     try {
                         // Attend un client
-                        so = ecoute.accept();
+                        Socket so = ecoute.accept();
+                        clients.add(so);
                         traiterClient(so, numClient);
                         numClient++;
                     } catch (IOException e) {
                         System.out.println("Erreur lors de la communication avec un client : " + e.getMessage());
                     }
                 }
+                System.out.println("DEUX CLIENTS CONNECTES");
+                sendMapToClients();
+
             } catch (IOException e) {
                 System.out.println("Erreur lors de la mise en place du serveur : " + e.getMessage());
             }
@@ -76,17 +82,51 @@ public class ServeurMulti {
 
     public static void shareMessage(String str, DataOutputStream currentClient) {
         List<DataOutputStream> listClients = ServeurMulti.listClients;
-        for (int i = 0; i<listClients.size(); i++){ //DataOutputStream sortie : listClients) {
+        for (int i = 0; i < listClients.size(); i++) { // DataOutputStream sortie : listClients) {
             DataOutputStream sortie = listClients.get(i);
             if (sortie != currentClient) {
                 try {
-                    str = i + " => " + str;
-                    sortie.writeUTF(str);
+                    String strTemp = i + " => " + str;
+                    sortie.writeUTF(strTemp);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
 
+    }
+
+    private static void sendMapToClients() {
+        String layoutPath = "src/snake/layouts/arenaNoWall.lay";
+        File mapFile = new File(layoutPath);
+
+        if (!mapFile.exists()) {
+            System.out.println("Erreur : fichier de map introuvable !");
+            return;
+        }
+
+        for (Socket client : clients) {
+            try {
+                DataOutputStream out = new DataOutputStream(client.getOutputStream());
+                FileInputStream fileIn = new FileInputStream(mapFile);
+
+                // Envoyer la taille du fichier en premier
+                out.writeLong(mapFile.length());
+
+                // Envoyer le contenu du fichier
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fileIn.read(buffer)) > 0) {
+                    out.write(buffer, 0, bytesRead);
+                }
+                out.flush();
+                fileIn.close();
+
+                System.out.println("Map envoyée au client.");
+
+            } catch (IOException e) {
+                System.out.println("Erreur lors de l'envoi de la map : " + e.getMessage());
+            }
+        }
     }
 }

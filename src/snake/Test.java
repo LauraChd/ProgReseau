@@ -10,12 +10,12 @@ public class Test {
     public static void main(String[] args) throws Exception {
 
 
-        //String layoutPath = "layouts/alone.lay"; 
+        String layoutPath = "src/snake/layouts/alone.lay"; 
         //String layoutPath = "layouts/aloneNoWall.lay"; 
         //String layoutPath = "layouts/arena.lay"; 
-        String layoutPath = "layouts/arenaNoWall.lay"; 
+        //String layoutPath = "src/snake/layouts/arenaNoWall.lay"; 
         //String layoutPath = "layouts/small.lay"; 
-        //String layoutPath = "layouts/smallArena.lay"; 
+        //String layoutPath = "src/snake/layouts/smallArena.lay"; 
         //String layoutPath = "layouts/smallArenaNoWall.lay"; 
         //String layoutPath = "layouts/smallNoWall.lay";
 

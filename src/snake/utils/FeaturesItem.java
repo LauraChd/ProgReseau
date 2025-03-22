@@ -1,15 +1,14 @@
 package snake.utils;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public class FeaturesItem {
 
-	
 	private int x;
 	private int y;
 	private ItemType itemType;
 	
-
-
-
+	public FeaturesItem(){}
 
 	public FeaturesItem(int x, int y, ItemType itemType) {
 		
@@ -18,9 +17,6 @@ public class FeaturesItem {
 		this.itemType = itemType;
 	
 	}
-	
-	
-	
 	
 	public int getX() {
 		return x;
@@ -51,6 +47,10 @@ public class FeaturesItem {
 		this.itemType = itemType;
 	}
 
+	@Override
+    public String toString() {
+        return itemType + "(" + x + "," + y + ")";
+    }
 
 	
 	

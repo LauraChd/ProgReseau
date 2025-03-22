@@ -31,7 +31,7 @@ public class EtatInitial implements Etat {
     }
 
     public void setSpeed(double speed) {
-        throw new UnsupportedOperationException("mode état initial");
+        viewCommand.abstractController.setSpeed(speed);
     }
     
 }

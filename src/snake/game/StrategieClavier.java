@@ -6,6 +6,8 @@ public class StrategieClavier implements Strategie {
 
     Snake snake;
     
+    public StrategieClavier(){}
+    
     public StrategieClavier(Snake snake){
         this.snake = snake;   
     }

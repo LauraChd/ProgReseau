@@ -1,6 +1,12 @@
 package reseau;
 import java.net.*;
 import java.util.Scanner;
+
+import snake.controller.ControllerSimpleGame;
+import snake.controller.ControllerSnakeGame;
+import snake.game.SnakeGame;
+import snake.model.InputMap;
+
 import java.io.*;
 
 /* Application cliente du serveur servTexte1, syntaxe d’appel java cliTexte1 s p c, elle envoie la
@@ -28,6 +34,9 @@ public class Client {
                 // On connecte un socket
                 Socket so = new Socket(serveur, port);
                 System.out.println("so est connecté");
+                File mapFile = receiveMap(so);
+                displayMap(mapFile);
+                System.out.println("Map recue");
                 // init des entrées et sorties
                 sortie = new PrintWriter(so.getOutputStream(), true);
                 entree = new DataInputStream(so.getInputStream());
@@ -49,6 +58,44 @@ public class Client {
         } else {
             System.out.println("syntaxe d’appel java cliTexte serveur port chaine_de_caractères\n");
         }
+    }
+
+    private static void displayMap(File mapFile) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(mapFile))) {
+            String ligne;
+            while ((ligne = reader.readLine()) != null) {
+                System.out.println(ligne);
+            }
+        } catch (IOException e) {
+            System.out.println("Erreur lors de l'affichage de la map : " + e.getMessage());
+        }
+    }
+
+    private static File receiveMap(Socket so) {
+        try {
+            DataInputStream in = new DataInputStream(so.getInputStream());
+            File mapFile = new File("arenaNoWall.lay");
+            FileOutputStream fileOut = new FileOutputStream(mapFile);
+
+            // Lire la taille du fichier
+            long fileSize = in.readLong();
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            long totalRead = 0;
+
+            // Lire et enregistrer le fichier
+            while (totalRead < fileSize && (bytesRead = in.read(buffer)) > 0) {
+                fileOut.write(buffer, 0, bytesRead);
+                totalRead += bytesRead;
+            }
+
+            fileOut.close();
+            System.out.println("Map sauvegardée sous " + mapFile.getAbsolutePath());
+            return mapFile;
+        } catch (IOException e) {
+            System.out.println("Erreur lors de la réception de la map : " + e.getMessage());
+        }
+        return null;
     }
 
     public static void sendMessage(Socket so, String serveur, String[] argu, int port,
@@ -86,5 +133,18 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void startSnakeGame(String layoutPath) {
+        SnakeGame snakeGame;
+        try {
+            snakeGame = new SnakeGame(10000, new InputMap(layoutPath));
+            ControllerSnakeGame controllerSnakeGame = new ControllerSnakeGame(snakeGame, layoutPath);
+            ControllerSimpleGame c1 = new ControllerSimpleGame(snakeGame);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
     }
 }

@@ -7,6 +7,8 @@ import snake.utils.Position;
 public class StrategieIA implements Strategie {
 
     Snake snake;
+    
+    public StrategieIA(){}
 
     public StrategieIA(Snake snake){
         this.snake = snake;   
