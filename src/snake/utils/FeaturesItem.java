@@ -52,7 +52,6 @@ public class FeaturesItem {
         return itemType + "(" + x + "," + y + ")";
     }
 
-	@JsonValue
     public String getItemTypeString() {
         return itemType.name(); 
     }

@@ -151,6 +151,7 @@ public class SnakeGame extends Game implements KeyListener {
         agent_mort();
 
         serializeGameState();
+    
         
     }
 

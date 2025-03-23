@@ -7,11 +7,11 @@ import java.util.List;
 public class GameState {
     private Snake snake1;
     private Snake snake2;
-    private List<FeaturesItem> items;  
+    private List<Item> items;  
 
     public GameState() {}
 
-    public GameState(Snake snake1, Snake snake2, List<FeaturesItem> items) {
+    public GameState(Snake snake1, Snake snake2, List<Item> items) {
         this.snake1 = snake1;
         this.snake2 = snake2;
         this.items = items;
@@ -23,8 +23,8 @@ public class GameState {
     public Snake getSnake2() { return snake2; }
     public void setSnake2(Snake snake2) { this.snake2 = snake2; }
 
-    public List<FeaturesItem> getItems() { return items; }
-    public void setItems(List<FeaturesItem> items) { this.items = items; }
+    public List<Item> getItems() { return items; }
+    public void setItems(List<Item> items) { this.items = items; }
 
     // Sérialisation JSON
     public String toJson() throws Exception {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import snake.game.GameState;
+import snake.game.Item;
 import snake.game.Snake;
 import snake.utils.AgentAction;
 import snake.utils.ColorSnake;
@@ -37,8 +38,8 @@ public class JSONTest {
             snake2.setIs_invincible(true);
 
             // Création des items
-            FeaturesItem item1 = new FeaturesItem(3, 3, ItemType.INVINCIBILITY_BALL);
-            FeaturesItem item2 = new FeaturesItem(7, 2, ItemType.APPLE);
+            Item item1 = new Item(3, 3, ItemType.INVINCIBILITY_BALL);
+            Item item2 = new Item(7, 2, ItemType.APPLE);
             
             // Création de l'état du jeu
             GameState gameState = new GameState(snake1, snake2, Arrays.asList(item1, item2));
