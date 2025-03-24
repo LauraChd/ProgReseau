@@ -52,9 +52,7 @@ public class FeaturesItem {
         return itemType + "(" + x + "," + y + ")";
     }
 
-    public String getItemTypeString() {
-        return itemType.name(); 
-    }
+    
 	
 	
 }

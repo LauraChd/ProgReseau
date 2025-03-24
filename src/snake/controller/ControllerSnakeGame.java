@@ -46,9 +46,9 @@ public class ControllerSnakeGame extends AbstractController {
             snakeGame.initializeGame();
 
             PanelSnakeGame panelSnakeGame = new PanelSnakeGame(
-                    inputMap.getSizeX(),
-                    inputMap.getSizeY(),
-                    inputMap.get_walls(),
+                    inputMap.getSize_x(),
+                    inputMap.getSize_y(),
+                    inputMap.getWalls(),
                     inputMap.getStart_snakes(),
                     inputMap.getStart_items()
             );

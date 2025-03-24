@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import snake.utils.AgentAction;
 import snake.utils.ColorSnake;
@@ -34,11 +35,12 @@ public class InputMap implements Serializable {
 	private ArrayList<FeaturesSnake> start_snakes ;
 	private ArrayList<FeaturesItem> start_items ;
 
-	
-	private BufferedReader buffer;
+	@JsonIgnore
+	private transient BufferedReader buffer;
 	
 	ColorSnake[] colorSnake = {ColorSnake.Green,ColorSnake.Red};
 	
+	public InputMap(){}
 
 	public InputMap(String filename) throws Exception{
 		
@@ -149,31 +151,82 @@ public class InputMap implements Serializable {
 
 		
 	}
-	
 
-	
-	public int getSizeX() {return(size_x);}
-	public int getSizeY() {return(size_y);}
-	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
-
-	
-	public String getFilename(){
+	public String getFilename() {
 		return filename;
 	}
 
-	public boolean[][] get_walls() {
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public int getSize_x() {
+		return size_x;
+	}
+
+	public void setSize_x(int size_x) {
+		this.size_x = size_x;
+	}
+
+	public int getSize_y() {
+		return size_y;
+	}
+
+	public void setSize_y(int size_y) {
+		this.size_y = size_y;
+	}
+
+	public boolean[][] getWalls() {
 		return walls;
 	}
-	
-	
+
+	public void setWalls(boolean[][] walls) {
+		this.walls = walls;
+	}
+
 	public ArrayList<FeaturesSnake> getStart_snakes() {
 		return start_snakes;
+	}
+
+	public void setStart_snakes(ArrayList<FeaturesSnake> start_snakes) {
+		this.start_snakes = start_snakes;
 	}
 
 	public ArrayList<FeaturesItem> getStart_items() {
 		return start_items;
 	}
+
+	public void setStart_items(ArrayList<FeaturesItem> start_items) {
+		this.start_items = start_items;
+	}
+
+	public BufferedReader getBuffer() {
+		return buffer;
+	}
+
+	public void setBuffer(BufferedReader buffer) {
+		this.buffer = buffer;
+	}
+
+	public ColorSnake[] getColorSnake() {
+		return colorSnake;
+	}
+
+	public void setColorSnake(ColorSnake[] colorSnake) {
+		this.colorSnake = colorSnake;
+	}
+	
+
+	
+	
+
+
+	
+	
 
 
 	

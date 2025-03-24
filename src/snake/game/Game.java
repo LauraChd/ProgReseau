@@ -7,6 +7,8 @@ public abstract class Game extends java.util.Observable implements Runnable{ //l
     Thread thread;
     public long time;
 
+    public Game(){}
+
     public Game (int maxturn){
         this.turn = 0;
         this.maxturn = maxturn;

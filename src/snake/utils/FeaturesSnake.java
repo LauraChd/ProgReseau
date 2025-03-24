@@ -15,6 +15,8 @@ public class FeaturesSnake {
 	
 	boolean isInvincible;
 	boolean isSick;
+
+	public FeaturesSnake(){}
 	
 	public FeaturesSnake(ArrayList<Position> positions, AgentAction lastAction, ColorSnake colorSnake, boolean isInvincible, boolean isSick) {
 		

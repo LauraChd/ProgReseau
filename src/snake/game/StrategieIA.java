@@ -53,7 +53,7 @@ public class StrategieIA implements Strategie {
 
         //actions possibles et leur distance de la pomme
         AgentAction[] actions = {AgentAction.MOVE_UP, AgentAction.MOVE_DOWN, AgentAction.MOVE_LEFT, AgentAction.MOVE_RIGHT};
-        int minDistance = snakeGame.carte.getSizeX()*snakeGame.carte.getSizeY();
+        int minDistance = snakeGame.carte.getSize_x()*snakeGame.carte.getSize_y();
         AgentAction meilleure_action = snake.agentAction;//direction actuelle par défaut
 
         for (AgentAction action : actions) {
@@ -65,19 +65,19 @@ public class StrategieIA implements Strategie {
                 switch (action) {
                     case MOVE_UP:
                         suivantY -= 1;
-                        if (suivantY < 0) suivantY = snakeGame.carte.getSizeY() - 1;
+                        if (suivantY < 0) suivantY = snakeGame.carte.getSize_y() - 1;
                         break;
                     case MOVE_DOWN:
                         suivantY += 1;
-                        if (suivantY >= snakeGame.carte.getSizeY()) suivantY = 0;
+                        if (suivantY >= snakeGame.carte.getSize_y()) suivantY = 0;
                         break;
                     case MOVE_LEFT:
                         suivantX -= 1;
-                        if (suivantX < 0) suivantX = snakeGame.carte.getSizeX() - 1;
+                        if (suivantX < 0) suivantX = snakeGame.carte.getSize_x() - 1;
                         break;
                     case MOVE_RIGHT:
                         suivantX += 1;
-                        if (suivantX >= snakeGame.carte.getSizeX()) suivantX = 0;
+                        if (suivantX >= snakeGame.carte.getSize_x()) suivantX = 0;
                         break;
                 }
             }
@@ -100,7 +100,7 @@ public class StrategieIA implements Strategie {
 
             if(!isLegalMove(action)) continue;
 
-            if (snakeGame.carte.get_walls()[suivantX][suivantY]) {
+            if (snakeGame.carte.getWalls()[suivantX][suivantY]) {
                 continue;
             }
 
@@ -136,14 +136,14 @@ public class StrategieIA implements Strategie {
                 continue;
             }
 
-            int distance = snakeGame.carte.getSizeX()*snakeGame.carte.getSizeY();
+            int distance = snakeGame.carte.getSize_x()*snakeGame.carte.getSize_y();
             if(mur_dans_la_carte(snakeGame))
                 distance = calculateDistance_avec_mur(suivantX, suivantY, pommeX, pommeY, snakeGame);
             else
                 distance = calculateDistance_sans_mur(suivantX, suivantY, pommeX, pommeY, snakeGame);
 
             if ((distance <= minDistance) && 
-                (!snake.is_sick || (distance > snake.tour_malade_restant || minDistance == snakeGame.carte.getSizeX()*snakeGame.carte.getSizeY()))) {
+                (!snake.is_sick || (distance > snake.tour_malade_restant || minDistance == snakeGame.carte.getSize_x()*snakeGame.carte.getSize_y()))) {
                 boolean prochain_boule_jaune = false;
                 for(Item item : snakeGame.item_liste){
                     if(item.itemType == ItemType.SICK_BALL){
@@ -153,7 +153,7 @@ public class StrategieIA implements Strategie {
                     }
                 }
 
-                if(((!snake.is_sick)&&(20 > distance)&& prochain_boule_jaune)&&( minDistance != snakeGame.carte.getSizeX()*snakeGame.carte.getSizeY())){
+                if(((!snake.is_sick)&&(20 > distance)&& prochain_boule_jaune)&&( minDistance != snakeGame.carte.getSize_x()*snakeGame.carte.getSize_y())){
                     //System.out.println("boule jaune ne pas aller");
                 }
                 else{
@@ -172,8 +172,8 @@ public class StrategieIA implements Strategie {
 
 
     public int calculateDistance_sans_mur(int x1, int y1, int x2, int y2,SnakeGame snakeGame) {
-        int dx = Math.min(Math.abs(x2 - x1), snakeGame.carte.getSizeX() - Math.abs(x2 - x1));
-        int dy = Math.min(Math.abs(y2 - y1), snakeGame.carte.getSizeY() - Math.abs(y2 - y1));
+        int dx = Math.min(Math.abs(x2 - x1), snakeGame.carte.getSize_x() - Math.abs(x2 - x1));
+        int dy = Math.min(Math.abs(y2 - y1), snakeGame.carte.getSize_y() - Math.abs(y2 - y1));
         return dx + dy;
     }
 
@@ -183,7 +183,7 @@ public class StrategieIA implements Strategie {
 
 
     public boolean mur_dans_la_carte(SnakeGame snakeGame){
-        boolean[][] walls = snakeGame.carte.get_walls();
+        boolean[][] walls = snakeGame.carte.getWalls();
     
         if (walls == null) {
             return false;
