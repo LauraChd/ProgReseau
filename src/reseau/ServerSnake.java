@@ -21,7 +21,7 @@ public class ServerSnake {
     public ServerSnake() {
         String layoutPath = "src/snake/layouts/smallArena.lay";
         try {
-            this.snakeGame = new SnakeGame(10000, new InputMap(layoutPath));
+            ServerSnake.snakeGame = new SnakeGame(10000, new InputMap(layoutPath));
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -60,11 +60,22 @@ public class ServerSnake {
 
             listClients.add(sortie);
 
-            // Envoyer l'état initial du jeu
-            String gameStateJson = mapper.writeValueAsString(snakeGame); // Convertir SnakeGame en JSON
-            sortie.writeUTF(mapper.writeValueAsString(snakeGame));
+            try{
+                mapper.writeValue(new File("game_state.json"), snakeGame);
+                System.out.println("Fichier d'état crée");
+            } catch (IOException e){
+                System.out.println("Problème d'init de la carte");
+                e.printStackTrace();
+            }
 
+            // Envoyer l'état initial du jeu
+            //String gameStateJson = mapper.writeValueAsString(snakeGame); // Convertir SnakeGame en JSON
+            sortie.writeUTF(mapper.writeValueAsString(snakeGame));
+           
+
+            System.out.println("En attente d'une donnée");
             String actionJson = entree.readLine(); // on lit ce qui arrive
+            System.out.println("Donnée reçue");
             while (!actionJson.equals("stop")) {
                 if (actionJson != null) {
                     // Mise à jour du jeu (ici, il faudrait traiter la commande reçue)
