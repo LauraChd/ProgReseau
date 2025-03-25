@@ -9,7 +9,7 @@ import snake.game.SnakeGame;
 
 public class ClientSnake {
     private static boolean end;
-    private static final String SERVER_ADDRESS = "localhost";
+    private static final String SERVER_ADDRESS = "192.168.47.129";
     private static final int PORT = 12345;
     private static ObjectMapper mapper = new ObjectMapper();
         private static SnakeGame snakeGame;

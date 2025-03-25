@@ -98,7 +98,7 @@ public class ControllerSnakeGame extends AbstractController {
                 }
             });
 
-            //remet fenêtre jeu au 1e plan
+            /*//remet fenêtre jeu au 1e plan
             Timer timer = new Timer(100, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -113,7 +113,7 @@ public class ControllerSnakeGame extends AbstractController {
                 }
             });
 
-            timer.start();
+            timer.start();*/
             
             frame.pack();
             frame.setVisible(true);

@@ -94,12 +94,14 @@ public class SnakeGame extends Game implements KeyListener {
         SnakeFactory snakeFactory = new SnakeFactory();
         // CARTE INITIALE
         for (FeaturesSnake s : carte.getStart_snakes()) {
-            if (s.getColorSnake() == ColorSnake.Red)
+            /*if (s.getColorSnake() == ColorSnake.Red)
                 snake_liste.add(snakeFactory.creerAgentIA(s.getPositions().get(0).getX(),
                         s.getPositions().get(0).getY(), s.getColorSnake()));
             else
                 snake_liste.add(snakeFactory.creerAgentHumain(s.getPositions().get(0).getX(),
-                        s.getPositions().get(0).getY(), s.getColorSnake()));
+                        s.getPositions().get(0).getY(), s.getColorSnake()));*/
+            snake_liste.add(snakeFactory.creerAgentHumain(s.getPositions().get(0).getX(),
+            s.getPositions().get(0).getY(), s.getColorSnake()));
         }
 
         for (FeaturesItem i : carte.getStart_items()) {

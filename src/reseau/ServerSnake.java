@@ -1,13 +1,17 @@
 package reseau;
 
+import java.awt.event.KeyEvent;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import snake.controller.ControllerSnakeGame;
+import snake.game.Snake;
 import snake.game.SnakeGame;
 import snake.model.InputMap;
+import snake.utils.AgentAction;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ServerSnake {
@@ -48,14 +52,23 @@ public class ServerSnake {
                     Socket so = ecoute.accept();
                     clients.add(so);
                     int currentNumClient = numClient;
-                    new Thread(() -> traiterClient(so, currentNumClient)).start();
+                    new Thread(() -> {
+                        try {
+                            traiterClient(so, currentNumClient);
+                        } catch (InterruptedException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }).start();
                     numClient++;
                 } catch (IOException e) {
                     System.out.println("Erreur lors de la communication avec un client");
                 }
                 System.out.println("Deux clients connectés");
                 
+                //if(clients.size() == MAX_CLIENTS){
                 ControllerSnakeGame controllerSnakeGame = new ControllerSnakeGame(snakeGame, layoutPath);
+                //}
             }
         } catch (IOException e) {
             System.out.println("Erreur lors de la mise en place du serveur");
@@ -63,7 +76,7 @@ public class ServerSnake {
         }
     }
 
-    public static void traiterClient(Socket so, int numClient) {
+    public static void traiterClient(Socket so, int numClient) throws InterruptedException {
         try {
             System.out.println(numClient + ". Une nouvelle connexion a été ouverte");
 
@@ -72,27 +85,33 @@ public class ServerSnake {
 
             listClients.add(sortie);
 
+            int playerIndex = numClient - 1;
+            System.out.println("Le client " + numClient + " contrôle le serpent " + playerIndex);
+
+
             // Envoyer l'état initial du jeu
             //String gameStateJson = mapper.writeValueAsString(snakeGame); // Convertir SnakeGame en JSON
             sortie.writeUTF(mapper.writeValueAsString(snakeGame));
            
             System.out.println("En attente d'une donnée");
-            String actionJson = entree.readLine(); // on lit ce qui arrive
+            String actionJson = entree.readLine(); //lit ce qui arrive
+
+            
+            System.out.println("afficher action : " + actionJson);
             System.out.println("Donnée reçue");
             while (!actionJson.equals("stop")) {
-                if (actionJson != null) {
-                    // Mise à jour du jeu (ici, il faudrait traiter la commande reçue)
-                    System.out.println("Action reçue: " + actionJson);
-
-                    // Mettre à jour le jeu (simulation de mise à jour)
+                if ((actionJson != null) && (actionJson != "updateReceived")) {
+                    System.out.println("Action reçue du joueur " + numClient + ": " + actionJson);
+                    //mettre update pour action dans carte
+                    //snakeGame.takeTurn();
+                    //snakeGame.keyPressed(null);
                     snakeGame.updateGame();
-
-                    // Envoyer l’état mis à jour du jeu
+                    //Thread.sleep(1000);
                     sortie.writeUTF(mapper.writeValueAsString(snakeGame));
-
-                    actionJson = entree.readLine(); // Lire la prochaine chaîne
+                    actionJson = entree.readLine();//lit la prochaine chaîne
                 }
             }
+            
             System.out.println(numClient + ". Fin de communication demandée");
             sortie.writeUTF("stopOK");
 

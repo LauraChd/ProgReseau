@@ -1,54 +1,64 @@
 {
-  "turn" : 37,
+  "turn" : 2,
   "time" : 1000,
   "snake_liste" : [ {
     "type" : "Snake",
-    "score" : -1,
-    "taille" : 1,
+    "score" : 17,
+    "taille" : 18,
     "position" : [ {
-      "x" : 2,
-      "y" : 6
-    } ],
-    "couleur" : "Green",
-    "agentAction" : "MOVE_DOWN",
-    "strategie" : {
-      "type" : "StrategieClavier"
-    },
-    "is_invincible" : false,
-    "is_sick" : true,
-    "tour_malade_restant" : 18,
-    "tour_invincible_restant" : 0
-  }, {
-    "type" : "Snake",
-    "score" : 8,
-    "taille" : 9,
-    "position" : [ {
+      "x" : 0,
+      "y" : 1
+    }, {
       "x" : 10,
       "y" : 1
     }, {
       "x" : 9,
       "y" : 1
     }, {
+      "x" : 8,
+      "y" : 1
+    }, {
+      "x" : 8,
+      "y" : 0
+    }, {
+      "x" : 8,
+      "y" : 6
+    }, {
       "x" : 9,
-      "y" : 2
+      "y" : 6
     }, {
-      "x" : 8,
-      "y" : 2
+      "x" : 10,
+      "y" : 6
     }, {
-      "x" : 7,
-      "y" : 2
+      "x" : 0,
+      "y" : 6
     }, {
-      "x" : 7,
-      "y" : 3
+      "x" : 1,
+      "y" : 6
     }, {
-      "x" : 8,
-      "y" : 3
+      "x" : 2,
+      "y" : 6
     }, {
-      "x" : 8,
-      "y" : 4
+      "x" : 2,
+      "y" : 0
     }, {
-      "x" : 8,
-      "y" : 5
+      "x" : 3,
+      "y" : 0
+    }, {
+      "x" : 4,
+      "y" : 0
+    }, {
+      "x" : 4,
+      "y" : 1
+    }, {
+      "x" : 3,
+      "y" : 1
+    }, {
+      "x" : 2,
+      "y" : 1
+    }, {
+      "x" : 1,
+      "y" : 1
     } ],
     "couleur" : "Red",
     "agentAction" : "MOVE_RIGHT",
@@ -61,11 +71,27 @@
     "tour_invincible_restant" : 0
   } ],
   "item_liste" : [ {
-    "x" : 3,
+    "x" : 1,
     "y" : 5,
-    "itemType" : "INVINCIBILITY_BALL"
+    "itemType" : "APPLE"
+  }, {
+    "x" : 10,
+    "y" : 5,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 6,
+    "y" : 0,
+    "itemType" : "APPLE"
   }, {
     "x" : 0,
+    "y" : 2,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 4,
+    "y" : 4,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 1,
     "y" : 4,
     "itemType" : "APPLE"
   } ],
@@ -104,41 +130,59 @@
   "gameContinue" : true,
   "featuresSnakes" : [ {
     "positions" : [ {
-      "x" : 2,
-      "y" : 6
-    } ],
-    "lastAction" : "MOVE_DOWN",
-    "colorSnake" : "Green",
-    "invincible" : false,
-    "sick" : true
-  }, {
-    "positions" : [ {
+      "x" : 0,
+      "y" : 1
+    }, {
       "x" : 10,
       "y" : 1
     }, {
       "x" : 9,
       "y" : 1
     }, {
+      "x" : 8,
+      "y" : 1
+    }, {
+      "x" : 8,
+      "y" : 0
+    }, {
+      "x" : 8,
+      "y" : 6
+    }, {
       "x" : 9,
-      "y" : 2
+      "y" : 6
     }, {
-      "x" : 8,
-      "y" : 2
+      "x" : 10,
+      "y" : 6
     }, {
-      "x" : 7,
-      "y" : 2
+      "x" : 0,
+      "y" : 6
     }, {
-      "x" : 7,
-      "y" : 3
+      "x" : 1,
+      "y" : 6
     }, {
-      "x" : 8,
-      "y" : 3
+      "x" : 2,
+      "y" : 6
     }, {
-      "x" : 8,
-      "y" : 4
+      "x" : 2,
+      "y" : 0
     }, {
-      "x" : 8,
-      "y" : 5
+      "x" : 3,
+      "y" : 0
+    }, {
+      "x" : 4,
+      "y" : 0
+    }, {
+      "x" : 4,
+      "y" : 1
+    }, {
+      "x" : 3,
+      "y" : 1
+    }, {
+      "x" : 2,
+      "y" : 1
+    }, {
+      "x" : 1,
+      "y" : 1
     } ],
     "lastAction" : "MOVE_RIGHT",
     "colorSnake" : "Red",
@@ -146,11 +190,27 @@
     "sick" : false
   } ],
   "featuresItems" : [ {
-    "x" : 3,
+    "x" : 1,
     "y" : 5,
-    "itemType" : "INVINCIBILITY_BALL"
+    "itemType" : "APPLE"
+  }, {
+    "x" : 10,
+    "y" : 5,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 6,
+    "y" : 0,
+    "itemType" : "APPLE"
   }, {
     "x" : 0,
+    "y" : 2,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 4,
+    "y" : 4,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 1,
     "y" : 4,
     "itemType" : "APPLE"
   } ]
