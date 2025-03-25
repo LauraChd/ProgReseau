@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import snake.controller.ControllerSnakeGame;
 import snake.game.SnakeGame;
 import snake.model.InputMap;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,10 +17,11 @@ public class ServerSnake {
     private static List<DataOutputStream> listClients = new ArrayList<>();
 
     private static SnakeGame snakeGame;
+    private static String layoutPath;
     private static ObjectMapper mapper = new ObjectMapper();
 
     public ServerSnake() {
-        String layoutPath = "src/snake/layouts/smallArena.lay";
+        layoutPath = "src/snake/layouts/smallArenaNoWall.lay";
         try {
             ServerSnake.snakeGame = new SnakeGame(10000, new InputMap(layoutPath));
         } catch (Exception e) {
@@ -32,6 +34,14 @@ public class ServerSnake {
         int numClient = 1;
         try (ServerSocket ecoute = new ServerSocket(PORT)) {
             System.out.println("Serveur en attente de " + MAX_CLIENTS + " connexions");
+            
+            try{
+                mapper.writeValue(new File("game_state.json"), snakeGame);
+                System.out.println("Fichier d'état crée");
+            } catch (IOException e){
+                System.out.println("Problème d'init de la carte");
+                e.printStackTrace();
+            }
 
             while (clients.size() < MAX_CLIENTS) {
                 try {
@@ -44,6 +54,8 @@ public class ServerSnake {
                     System.out.println("Erreur lors de la communication avec un client");
                 }
                 System.out.println("Deux clients connectés");
+                
+                ControllerSnakeGame controllerSnakeGame = new ControllerSnakeGame(snakeGame, layoutPath);
             }
         } catch (IOException e) {
             System.out.println("Erreur lors de la mise en place du serveur");
@@ -60,19 +72,10 @@ public class ServerSnake {
 
             listClients.add(sortie);
 
-            try{
-                mapper.writeValue(new File("game_state.json"), snakeGame);
-                System.out.println("Fichier d'état crée");
-            } catch (IOException e){
-                System.out.println("Problème d'init de la carte");
-                e.printStackTrace();
-            }
-
             // Envoyer l'état initial du jeu
             //String gameStateJson = mapper.writeValueAsString(snakeGame); // Convertir SnakeGame en JSON
             sortie.writeUTF(mapper.writeValueAsString(snakeGame));
            
-
             System.out.println("En attente d'une donnée");
             String actionJson = entree.readLine(); // on lit ce qui arrive
             System.out.println("Donnée reçue");
