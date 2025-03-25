@@ -21,7 +21,7 @@ public class ServeurMulti {
     private static SnakeGame snakeGame;
         private static ObjectMapper mapper = new ObjectMapper();
             private static List<Socket> clients = new ArrayList<>();
-            private static List<DataOutputStream> listClients = new ArrayList<>();
+            static List<DataOutputStream> listClients = new ArrayList<>();
         
             public ServeurMulti() {
                 String layoutPath = "src/snake/layouts/alone.lay";
@@ -78,7 +78,7 @@ public class ServeurMulti {
                     String gameStateJson = mapper.writeValueAsString(snakeGame); // Convertir SnakeGame en JSON
             sortie.writeUTF(gameStateJson); // Envoyer l'état du jeu initial au client
     
-            String str = entree.readLine(); // on lit ce qui arrive
+            
             while (!str.equals("stop")) {
                 System.out.println(numClient + ". On a reçu : |" + str + "|");
                 sendUpdate(str, sortie);  // Partager les messages avec tous les clients

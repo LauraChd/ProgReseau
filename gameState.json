@@ -2,11 +2,7 @@
   "turn" : 0,
   "time" : 1000,
   "snake_liste" : [ ],
-  "item_liste" : [ {
-    "x" : 19,
-    "y" : 2,
-    "itemType" : "APPLE"
-  } ],
+  "item_liste" : [ ],
   "carte" : {
     "filename" : "src/snake/layouts/alone.lay",
     "size_x" : 22,
@@ -32,9 +28,5 @@
   "pitem" : 0.3,
   "gameContinue" : false,
   "featuresSnakes" : [ ],
-  "featuresItems" : [ {
-    "x" : 19,
-    "y" : 2,
-    "itemType" : "APPLE"
-  } ]
+  "featuresItems" : [ ]
 }
