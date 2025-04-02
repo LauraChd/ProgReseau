@@ -23,6 +23,7 @@ public class ServerSnake {
     private static SnakeGame snakeGame;
     private static String layoutPath;
     private static ObjectMapper mapper = new ObjectMapper();
+    private static boolean debutJeu = false;
 
     public ServerSnake() {
         layoutPath = "src/snake/layouts/smallArenaNoWall.lay";
@@ -38,11 +39,11 @@ public class ServerSnake {
         int numClient = 1;
         try (ServerSocket ecoute = new ServerSocket(PORT)) {
             System.out.println("Serveur en attente de " + MAX_CLIENTS + " connexions");
-            
-            try{
+
+            try {
                 mapper.writeValue(new File("game_state.json"), snakeGame);
                 System.out.println("Fichier d'état crée");
-            } catch (IOException e){
+            } catch (IOException e) {
                 System.out.println("Problème d'init de la carte");
                 e.printStackTrace();
             }
@@ -54,6 +55,7 @@ public class ServerSnake {
                     int currentNumClient = numClient;
                     new Thread(() -> {
                         try {
+                            System.out.println("😊");
                             traiterClient(so, currentNumClient);
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
@@ -65,10 +67,10 @@ public class ServerSnake {
                     System.out.println("Erreur lors de la communication avec un client");
                 }
                 System.out.println("Deux clients connectés");
-                
-                //if(clients.size() == MAX_CLIENTS){
+
+                // if(clients.size() == MAX_CLIENTS){
                 ControllerSnakeGame controllerSnakeGame = new ControllerSnakeGame(snakeGame, layoutPath);
-                //}
+                // }
             }
         } catch (IOException e) {
             System.out.println("Erreur lors de la mise en place du serveur");
@@ -77,41 +79,45 @@ public class ServerSnake {
     }
 
     public static void traiterClient(Socket so, int numClient) throws InterruptedException {
+        BufferedReader entree = null;
+        DataOutputStream sortie = null;
         try {
-            System.out.println(numClient + ". Une nouvelle connexion a été ouverte");
+            //while (!debutJeu) {
+                System.out.println(numClient + ". Une nouvelle connexion a été ouverte");
 
-            BufferedReader entree = new BufferedReader(new InputStreamReader(so.getInputStream()));
-            DataOutputStream sortie = new DataOutputStream(so.getOutputStream());
+                listClients.add(sortie);
 
-            listClients.add(sortie);
+                entree = new BufferedReader(new InputStreamReader(so.getInputStream()));
+                sortie = new DataOutputStream(so.getOutputStream());
 
-            int playerIndex = numClient - 1;
-            System.out.println("Le client " + numClient + " contrôle le serpent " + playerIndex);
+                int playerIndex = numClient - 1;
+                System.out.println("Le client " + numClient + " contrôle le serpent " + playerIndex);
+                sortie.writeUTF("NUMSNAKE :" + playerIndex);
 
+                // Envoyer l'état initial du jeu
+                // String gameStateJson = mapper.writeValueAsString(snakeGame); // Convertir
+                // SnakeGame en JSON
+                sortie.writeUTF("ETATINITIAL :" + mapper.writeValueAsString(snakeGame));
 
-            // Envoyer l'état initial du jeu
-            //String gameStateJson = mapper.writeValueAsString(snakeGame); // Convertir SnakeGame en JSON
-            sortie.writeUTF(mapper.writeValueAsString(snakeGame));
-           
+            //}
             System.out.println("En attente d'une donnée");
-            String actionJson = entree.readLine(); //lit ce qui arrive
+            String actionJson = entree.readLine(); // lit ce qui arrive
 
-            
             System.out.println("afficher action : " + actionJson);
             System.out.println("Donnée reçue");
             while (!actionJson.equals("stop")) {
                 if ((actionJson != null) && (actionJson != "updateReceived")) {
                     System.out.println("Action reçue du joueur " + numClient + ": " + actionJson);
-                    //mettre update pour action dans carte
-                    //snakeGame.takeTurn();
-                    //snakeGame.keyPressed(null);
+                    // mettre update pour action dans carte
+                    // snakeGame.takeTurn();
+                    // snakeGame.keyPressed(null);
                     snakeGame.updateGame();
-                    //Thread.sleep(1000);
+                    // Thread.sleep(1000);
                     sortie.writeUTF(mapper.writeValueAsString(snakeGame));
-                    actionJson = entree.readLine();//lit la prochaine chaîne
+                    actionJson = entree.readLine();// lit la prochaine chaîne
                 }
             }
-            
+
             System.out.println(numClient + ". Fin de communication demandée");
             sortie.writeUTF("stopOK");
 
@@ -150,3 +156,13 @@ public class ServerSnake {
 
     }
 }
+
+/*
+ * 
+ * Ce qui fonctionne : 
+ * - quand on la,nce le jeu, le serveur se met bien à jour à chaque tour
+ * 
+ * Ce qui ne fonctionne pas : 
+ * - le serveur n'envoie pas ces nouveaux états aux joueurs
+ * - le contrôle des snake se fait sur le serveur donc les deux snakes ont les mêmes flèches
+ */

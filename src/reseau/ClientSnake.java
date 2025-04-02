@@ -4,15 +4,25 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import snake.game.Snake;
 import snake.game.SnakeGame;
+import snake.game.StrategieClavier;
+import snake.model.InputMap;
+import snake.utils.AgentAction;
 
 public class ClientSnake {
     private static boolean end;
-    private static final String SERVER_ADDRESS = "192.168.47.129";
+    private static final String SERVER_ADDRESS = "localhost"; //"192.168.47.129";
     private static final int PORT = 12345;
     private static ObjectMapper mapper = new ObjectMapper();
-        private static SnakeGame snakeGame;
+    private static SnakeGame snakeGame;
+    private static int playerIndex;
+    private static boolean debutJeu = false;
+    private static String map;
     
         public void start() {
             end = false;
@@ -21,9 +31,18 @@ public class ClientSnake {
                 DataInputStream entree = new DataInputStream(so.getInputStream());
                 PrintWriter sortie = new PrintWriter(so.getOutputStream(), true);
     
+                while(!debutJeu){
+                    String reception = entree.readUTF();
+                    System.out.println("Donnée reçue : " + reception);
+                    readEntree(reception);
+                }
                 // Recevoir l'état initial du jeu
                 System.out.println("En attente de données");
                 String gameStateJson = entree.readUTF();
+
+
+                
+
                 System.out.println("Donnée recue");
                 initGame(entree);
                 SnakeGame snakeGame = mapper.readValue(gameStateJson, SnakeGame.class);
@@ -42,6 +61,32 @@ public class ClientSnake {
     
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+        public void readEntree(String reception){
+            String[] receptionSplit = reception.split(":");
+            String key = receptionSplit[0];
+            switch (key) {
+                case "NUMSNAKE":
+                    playerIndex = Integer.valueOf(receptionSplit[1]);
+                    System.out.println("playerIndex : " + playerIndex);
+                    break;
+                case "ETATINITIAL":
+                    String gameStateJson = receptionSplit[1];
+                    try {
+                        snakeGame = mapper.readValue(gameStateJson, SnakeGame.class);
+                    } catch (JsonMappingException e) {
+                        e.printStackTrace();
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    } 
+                    System.out.println("gameStateJson : \n" + gameStateJson);
+                    break;
+                case "DEBUTJEU":
+                    debutJeu = true;
+                default:
+                    break;
             }
         }
     
@@ -146,6 +191,36 @@ public class ClientSnake {
             }
         }
     }
+
+    /*@Override
+    public void keyPressed(KeyEvent e) {
+        for (Snake s : snake_liste) {
+            if (s.strategie instanceof StrategieClavier) {
+
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_NUMPAD8:
+                        if (s.strategie.isLegalMove(AgentAction.MOVE_UP))
+                            s.agentAction = AgentAction.MOVE_UP;
+                        break;
+                    case KeyEvent.VK_NUMPAD5:
+                        if (s.strategie.isLegalMove(AgentAction.MOVE_DOWN))
+                            s.agentAction = AgentAction.MOVE_DOWN;
+                        break;
+                    case KeyEvent.VK_NUMPAD4:
+                        if (s.strategie.isLegalMove(AgentAction.MOVE_LEFT))
+                            s.agentAction = AgentAction.MOVE_LEFT;
+                        break;
+                    case KeyEvent.VK_NUMPAD6:
+                        if (s.strategie.isLegalMove(AgentAction.MOVE_RIGHT))
+                            s.agentAction = AgentAction.MOVE_RIGHT;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+    }*/
 
     public static void main(String[] args) {
         new ClientSnake().start();
