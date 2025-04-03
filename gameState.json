@@ -1,34 +1,33 @@
 {
-  "turn" : 381,
-  "time" : 250,
+  "turn" : 5,
+  "time" : 1000,
   "snake_liste" : [ {
     "type" : "Snake",
-    "score" : 10,
-    "taille" : 7,
+    "score" : 0,
+    "taille" : 1,
     "position" : [ {
-      "x" : 9,
-      "y" : 3
-    }, {
-      "x" : 10,
-      "y" : 3
-    }, {
-      "x" : 0,
-      "y" : 3
-    }, {
-      "x" : 1,
-      "y" : 3
-    }, {
-      "x" : 2,
-      "y" : 3
-    }, {
-      "x" : 3,
-      "y" : 3
-    }, {
-      "x" : 4,
-      "y" : 3
+      "x" : 20,
+      "y" : 5
     } ],
     "couleur" : "Green",
-    "agentAction" : "MOVE_LEFT",
+    "agentAction" : "MOVE_RIGHT",
+    "strategie" : {
+      "type" : "StrategieClavier"
+    },
+    "is_invincible" : false,
+    "is_sick" : false,
+    "tour_malade_restant" : 0,
+    "tour_invincible_restant" : 0
+  }, {
+    "type" : "Snake",
+    "score" : 0,
+    "taille" : 1,
+    "position" : [ {
+      "x" : 7,
+      "y" : 8
+    } ],
+    "couleur" : "Red",
+    "agentAction" : "MOVE_RIGHT",
     "strategie" : {
       "type" : "StrategieClavier"
     },
@@ -38,37 +37,37 @@
     "tour_invincible_restant" : 0
   } ],
   "item_liste" : [ {
-    "x" : 1,
-    "y" : 5,
+    "x" : 8,
+    "y" : 8,
     "itemType" : "APPLE"
   } ],
   "carte" : {
-    "filename" : "src/snake/layouts/smallArenaNoWall.lay",
-    "size_x" : 11,
-    "size_y" : 7,
-    "walls" : [ [ false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false ] ],
+    "filename" : "src/snake/layouts/arenaNoWall2.lay",
+    "size_x" : 22,
+    "size_y" : 11,
+    "walls" : [ [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ] ],
     "start_snakes" : [ {
       "positions" : [ {
-        "x" : 2,
-        "y" : 2
-      } ],
-      "lastAction" : "MOVE_DOWN",
-      "colorSnake" : "Green",
-      "invincible" : false,
-      "sick" : false
-    }, {
-      "positions" : [ {
-        "x" : 9,
+        "x" : 15,
         "y" : 5
       } ],
       "lastAction" : "MOVE_DOWN",
+      "colorSnake" : "Green",
+      "sick" : false,
+      "invincible" : false
+    }, {
+      "positions" : [ {
+        "x" : 2,
+        "y" : 8
+      } ],
+      "lastAction" : "MOVE_DOWN",
       "colorSnake" : "Red",
-      "invincible" : false,
-      "sick" : false
+      "sick" : false,
+      "invincible" : false
     } ],
     "start_items" : [ {
-      "x" : 4,
-      "y" : 4,
+      "x" : 8,
+      "y" : 8,
       "itemType" : "APPLE"
     } ],
     "colorSnake" : [ "Green", "Red" ]
@@ -77,35 +76,26 @@
   "gameContinue" : true,
   "featuresSnakes" : [ {
     "positions" : [ {
-      "x" : 9,
-      "y" : 3
-    }, {
-      "x" : 10,
-      "y" : 3
-    }, {
-      "x" : 0,
-      "y" : 3
-    }, {
-      "x" : 1,
-      "y" : 3
-    }, {
-      "x" : 2,
-      "y" : 3
-    }, {
-      "x" : 3,
-      "y" : 3
-    }, {
-      "x" : 4,
-      "y" : 3
+      "x" : 20,
+      "y" : 5
     } ],
-    "lastAction" : "MOVE_LEFT",
+    "lastAction" : "MOVE_RIGHT",
     "colorSnake" : "Green",
-    "invincible" : false,
-    "sick" : false
+    "sick" : false,
+    "invincible" : false
+  }, {
+    "positions" : [ {
+      "x" : 7,
+      "y" : 8
+    } ],
+    "lastAction" : "MOVE_RIGHT",
+    "colorSnake" : "Red",
+    "sick" : false,
+    "invincible" : false
   } ],
   "featuresItems" : [ {
-    "x" : 1,
-    "y" : 5,
+    "x" : 8,
+    "y" : 8,
     "itemType" : "APPLE"
   } ]
 }

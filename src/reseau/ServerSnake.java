@@ -100,6 +100,7 @@ public class ServerSnake {
                 sortie.writeUTF("ETATINITIAL :" + mapper.writeValueAsString(snakeGame));
 
             //}
+            
             System.out.println("En attente d'une donnée");
             String actionJson = entree.readLine(); // lit ce qui arrive
 
@@ -165,4 +166,8 @@ public class ServerSnake {
  * Ce qui ne fonctionne pas : 
  * - le serveur n'envoie pas ces nouveaux états aux joueurs
  * - le contrôle des snake se fait sur le serveur donc les deux snakes ont les mêmes flèches
+ * 
+ * 
+ * A FAIRE : 
+ * séparer gestion du jeu (serveur) de l'affichage (client) -> envoyer les modifications d'état du client au serveur aux autres clients
  */

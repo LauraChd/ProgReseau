@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import snake.model.InputMap;
 import snake.utils.AgentAction;
@@ -446,6 +447,103 @@ private void serializeGameState() {
                     }
                 }
             }
+        }
+    
+        // Vérifier si des serpents sont morts
+        agent_mort();
+    
+        // Ajouter aléatoirement de nouveaux items
+        if (Math.random() < pitem) {
+            Position pos = genererPositionLibre();
+            if (pos != null) {
+                item_liste.add(new Item(pos.getX(), pos.getY(), ItemType.APPLE));
+            }
+        }
+    
+        // Vérifier si le jeu doit continuer
+        if (liste_snake_vide()) {
+            gameOver();
+        }
+    
+        // Sérialiser et envoyer l'état du jeu
+        serializeGameState();
+    }
+
+    public void updateGameFromGameState(GameState gs) {
+        Snake snake1 = gs.getSnake1();
+        Snake snake2 = gs.getSnake1();
+        List<Snake> lSnake = new ArrayList<>();
+        if(snake1 != null)
+            lSnake.add(snake1);
+        if(snake2 != null)
+            lSnake.add(snake2);
+        List<Item> lItem = gs.getItems();
+        if (!gameContinue) return; // Arrêter si le jeu est terminé
+        
+
+    
+        // Appliquer les actions et déplacer les serpents
+        int cpt = 0;
+        for (Snake s : lSnake) {
+            if (s.is_sick && s.tour_malade_restant > 0) {
+                snake_liste.get(cpt).tour_malade_restant--; //TODO changer le s pour le snake du jeu
+                if (s.tour_malade_restant == 0) snake_liste.get(cpt).is_sick = false;
+            }
+            if (s.is_invincible && s.tour_invincible_restant > 0) {
+                snake_liste.get(cpt).tour_invincible_restant--;
+                if (s.tour_invincible_restant == 0) snake_liste.get(cpt).is_invincible = false;
+            }
+    
+            // Déplacer le serpent selon sa stratégie
+            snake_liste.get(cpt).moveAgent(s.strategie.direction_choisie(this), carte.getSize_x(), carte.getSize_y());
+            cpt++;
+        }
+    
+        // Gérer les collisions et interactions avec les objets
+        int cpt2 = 0;
+        for (Snake s : new ArrayList<>(lSnake)) {
+            Position tete = s.position.get(0);
+            
+            // Vérifier collision avec les murs
+            if (carte.getWalls()[tete.getX()][tete.getY()] && !s.is_invincible) {
+                snake_liste.remove(snake_liste.get(cpt2));
+                continue;
+            }
+    
+            // Vérifier collision avec les items
+            for (Item item : new ArrayList<>(lItem)) {
+                if (item.x == tete.getX() && item.y == tete.getY()) {
+                    switch (item.itemType) {
+                        case APPLE:
+                            snake_liste.get(cpt2).augmenter_taille();
+                            snake_liste.get(cpt2).incrScore(1);
+                            item_liste.remove(item);
+                            break;
+                        case BOX:
+                            if (Math.random() < 0.5) {
+                                item.itemType = ItemType.SICK_BALL;
+                                snake_liste.get(cpt2).incrScore(-3);
+                            } else {
+                                item.itemType = ItemType.INVINCIBILITY_BALL;
+                                snake_liste.get(cpt2).incrScore(5);
+                            }
+                            break;
+                        case SICK_BALL:
+                            snake_liste.get(cpt2).is_sick = true;
+                            snake_liste.get(cpt2).tour_malade_restant = 20;
+                            item_liste.remove(item);
+                            snake_liste.get(cpt2).incrScore(-2);
+                            break;
+                        case INVINCIBILITY_BALL:
+                            snake_liste.get(cpt2).is_invincible = true;
+                            snake_liste.get(cpt2).tour_invincible_restant = 20;
+                            item_liste.remove(item);
+                            snake_liste.get(cpt2).incrScore(4);
+                            break;
+                    }
+                }
+            }
+            cpt++;
         }
     
         // Vérifier si des serpents sont morts
