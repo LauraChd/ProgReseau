@@ -26,7 +26,7 @@ public class SnakeGame extends Game implements KeyListener {
     private double pitem;// proba apparition item
     public boolean gameContinue;
 
-    public SnakeGame(){
+    public SnakeGame() {
     }
 
     public SnakeGame(int maxturn, InputMap carte) {
@@ -44,8 +44,6 @@ public class SnakeGame extends Game implements KeyListener {
         gameContinue = false;
         isRunning = false;
     }
-
-    
 
     public ArrayList<Snake> getSnake_liste() {
         return snake_liste;
@@ -95,14 +93,16 @@ public class SnakeGame extends Game implements KeyListener {
         SnakeFactory snakeFactory = new SnakeFactory();
         // CARTE INITIALE
         for (FeaturesSnake s : carte.getStart_snakes()) {
-            /*if (s.getColorSnake() == ColorSnake.Red)
-                snake_liste.add(snakeFactory.creerAgentIA(s.getPositions().get(0).getX(),
-                        s.getPositions().get(0).getY(), s.getColorSnake()));
-            else
-                snake_liste.add(snakeFactory.creerAgentHumain(s.getPositions().get(0).getX(),
-                        s.getPositions().get(0).getY(), s.getColorSnake()));*/
+            /*
+             * if (s.getColorSnake() == ColorSnake.Red)
+             * snake_liste.add(snakeFactory.creerAgentIA(s.getPositions().get(0).getX(),
+             * s.getPositions().get(0).getY(), s.getColorSnake()));
+             * else
+             * snake_liste.add(snakeFactory.creerAgentHumain(s.getPositions().get(0).getX(),
+             * s.getPositions().get(0).getY(), s.getColorSnake()));
+             */
             snake_liste.add(snakeFactory.creerAgentHumain(s.getPositions().get(0).getX(),
-            s.getPositions().get(0).getY(), s.getColorSnake()));
+                    s.getPositions().get(0).getY(), s.getColorSnake()));
         }
 
         for (FeaturesItem i : carte.getStart_items()) {
@@ -199,22 +199,21 @@ public class SnakeGame extends Game implements KeyListener {
         agent_mort();
 
         serializeGameState();
-    
-        
+
     }
 
     // Méthode pour sérialiser l'état du jeu
-private void serializeGameState() {
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.enable(SerializationFeature.INDENT_OUTPUT); // Format JSON lisible
-    
-    try {
-        mapper.writeValue(new File("gameState.json"), this);
-        System.out.println("État du jeu sauvegardé dans gameState.json");
-    } catch (IOException e) {
-        e.printStackTrace();
+    private void serializeGameState() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT); // Format JSON lisible
+
+        try {
+            mapper.writeValue(new File("gameState.json"), this);
+            System.out.println("État du jeu sauvegardé dans gameState.json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-}
 
     public void agent_mort() {
 
@@ -387,33 +386,36 @@ private void serializeGameState() {
     }
 
     public void updateGame() {
-        if (!gameContinue) return; // Arrêter si le jeu est terminé
-    
+        if (!gameContinue)
+            return; // Arrêter si le jeu est terminé
+
         // Appliquer les actions et déplacer les serpents
         for (Snake s : snake_liste) {
             if (s.is_sick && s.tour_malade_restant > 0) {
                 s.tour_malade_restant--;
-                if (s.tour_malade_restant == 0) s.is_sick = false;
+                if (s.tour_malade_restant == 0)
+                    s.is_sick = false;
             }
             if (s.is_invincible && s.tour_invincible_restant > 0) {
                 s.tour_invincible_restant--;
-                if (s.tour_invincible_restant == 0) s.is_invincible = false;
+                if (s.tour_invincible_restant == 0)
+                    s.is_invincible = false;
             }
-    
+
             // Déplacer le serpent selon sa stratégie
             s.moveAgent(s.strategie.direction_choisie(this), carte.getSize_x(), carte.getSize_y());
         }
-    
+
         // Gérer les collisions et interactions avec les objets
         for (Snake s : new ArrayList<>(snake_liste)) {
             Position tete = s.position.get(0);
-    
+
             // Vérifier collision avec les murs
             if (carte.getWalls()[tete.getX()][tete.getY()] && !s.is_invincible) {
                 snake_liste.remove(s);
                 continue;
             }
-    
+
             // Vérifier collision avec les items
             for (Item item : new ArrayList<>(item_liste)) {
                 if (item.x == tete.getX() && item.y == tete.getY()) {
@@ -448,10 +450,10 @@ private void serializeGameState() {
                 }
             }
         }
-    
+
         // Vérifier si des serpents sont morts
         agent_mort();
-    
+
         // Ajouter aléatoirement de nouveaux items
         if (Math.random() < pitem) {
             Position pos = genererPositionLibre();
@@ -459,96 +461,148 @@ private void serializeGameState() {
                 item_liste.add(new Item(pos.getX(), pos.getY(), ItemType.APPLE));
             }
         }
-    
+
         // Vérifier si le jeu doit continuer
         if (liste_snake_vide()) {
             gameOver();
         }
-    
+
         // Sérialiser et envoyer l'état du jeu
         serializeGameState();
     }
 
     public void updateGameFromGameState(GameState gs) {
-        Snake snake1 = gs.getSnake1();
-        Snake snake2 = gs.getSnake1();
-        List<Snake> lSnake = new ArrayList<>();
-        if(snake1 != null)
-            lSnake.add(snake1);
-        if(snake2 != null)
-            lSnake.add(snake2);
-        List<Item> lItem = gs.getItems();
-        if (!gameContinue) return; // Arrêter si le jeu est terminé
+        System.out.println("DEBUT");
+        for(Snake s : snake_liste){
+            System.out.println("real snake " + s.toString());
+        }
+        for(Item i : item_liste){
+            System.out.println("real item " + i.toString());
+        }
+        //GET NEW SNAKES
+        Snake newS1 = new Snake();
+        Snake newS2 = new Snake();
+        List<Snake> gsSnakeList = gs.getSnake_liste();
+        //s1
+        newS1.setTaille(gsSnakeList.get(0).getTaille());
+        newS1.setCouleur(gsSnakeList.get(0).getCouleur());
+        newS1.setAgentAction(gsSnakeList.get(0).getAgentAction());
+        newS1.setIs_invincible(gsSnakeList.get(0).isIs_invincible());
+        newS1.setIs_sick(gsSnakeList.get(0).isIs_sick());
+        newS1.setTour_invincible_restant(gsSnakeList.get(0).getTour_invincible_restant());
+        newS1.setTour_malade_restant(gsSnakeList.get(0).getTour_malade_restant());
+        newS1.setScore(gsSnakeList.get(0).getScore());
+        newS1.setPosition(gsSnakeList.get(0).getPosition());
+        newS1.setStrategie(gsSnakeList.get(0).getStrategie());
+        //newS1.getStrategie().setSnake(newS1);
+        //s2
+        newS2.setTaille(gsSnakeList.get(1).getTaille());
+        newS2.setCouleur(gsSnakeList.get(1).getCouleur());
+        newS2.setAgentAction(gsSnakeList.get(1).getAgentAction());
+        newS2.setIs_invincible(gsSnakeList.get(1).isIs_invincible());
+        newS2.setIs_sick(gsSnakeList.get(1).isIs_sick());
+        newS2.setTour_invincible_restant(gsSnakeList.get(1).getTour_invincible_restant());
+        newS2.setTour_malade_restant(gsSnakeList.get(1).getTour_malade_restant());
+        newS2.setScore(gsSnakeList.get(1).getScore());
+        newS2.setPosition(gsSnakeList.get(1).getPosition());
+        newS2.setStrategie(gsSnakeList.get(1).getStrategie());
+        //newS2.getStrategie().setSnake(newS2);
+
+        ArrayList<Snake> newrealSnakes = new ArrayList<>();
+        newrealSnakes.add(newS1);
+        newrealSnakes.add(newS2);
+        setSnake_liste(newrealSnakes);
+
+        for(Snake s : snake_liste){
+            System.out.println("new snake " + s.toString());
+        }
+
+        //GET NEW ITEMS
+        List<Item> gsItemList = gs.getItem_liste();
+        ArrayList<Item> newrealItems = new ArrayList<>();
+        for(Item i : gsItemList){
+            Item newI = new Item();
+            newI.setItemType(i.getItemType());
+            newI.setX(i.getX());
+            newI.setY(i.getY());
+            newrealItems.add(newI);
+        }
+        setItem_liste(newrealItems);
+
+        for(Item i : item_liste){
+            System.out.println("new item " + i.toString());
+        }
         
 
-    
-        // Appliquer les actions et déplacer les serpents
-        int cpt = 0;
-        for (Snake s : lSnake) {
-            if (s.is_sick && s.tour_malade_restant > 0) {
-                snake_liste.get(cpt).tour_malade_restant--; //TODO changer le s pour le snake du jeu
-                if (s.tour_malade_restant == 0) snake_liste.get(cpt).is_sick = false;
-            }
-            if (s.is_invincible && s.tour_invincible_restant > 0) {
-                snake_liste.get(cpt).tour_invincible_restant--;
-                if (s.tour_invincible_restant == 0) snake_liste.get(cpt).is_invincible = false;
-            }
-    
-            // Déplacer le serpent selon sa stratégie
-            snake_liste.get(cpt).moveAgent(s.strategie.direction_choisie(this), carte.getSize_x(), carte.getSize_y());
-            cpt++;
+
+        if (!gameContinue)
+        return; // Arrêter si le jeu est terminé
+
+    // Appliquer les actions et déplacer les serpents
+    for (Snake s : snake_liste) {
+        if (s.is_sick && s.tour_malade_restant > 0) {
+            s.tour_malade_restant--;
+            if (s.tour_malade_restant == 0)
+                s.is_sick = false;
         }
-    
-        // Gérer les collisions et interactions avec les objets
-        int cpt2 = 0;
-        for (Snake s : new ArrayList<>(lSnake)) {
-            Position tete = s.position.get(0);
-            
-            // Vérifier collision avec les murs
-            if (carte.getWalls()[tete.getX()][tete.getY()] && !s.is_invincible) {
-                snake_liste.remove(snake_liste.get(cpt2));
-                continue;
-            }
-    
-            // Vérifier collision avec les items
-            for (Item item : new ArrayList<>(lItem)) {
-                if (item.x == tete.getX() && item.y == tete.getY()) {
-                    switch (item.itemType) {
-                        case APPLE:
-                            snake_liste.get(cpt2).augmenter_taille();
-                            snake_liste.get(cpt2).incrScore(1);
-                            item_liste.remove(item);
-                            break;
-                        case BOX:
-                            if (Math.random() < 0.5) {
-                                item.itemType = ItemType.SICK_BALL;
-                                snake_liste.get(cpt2).incrScore(-3);
-                            } else {
-                                item.itemType = ItemType.INVINCIBILITY_BALL;
-                                snake_liste.get(cpt2).incrScore(5);
-                            }
-                            break;
-                        case SICK_BALL:
-                            snake_liste.get(cpt2).is_sick = true;
-                            snake_liste.get(cpt2).tour_malade_restant = 20;
-                            item_liste.remove(item);
-                            snake_liste.get(cpt2).incrScore(-2);
-                            break;
-                        case INVINCIBILITY_BALL:
-                            snake_liste.get(cpt2).is_invincible = true;
-                            snake_liste.get(cpt2).tour_invincible_restant = 20;
-                            item_liste.remove(item);
-                            snake_liste.get(cpt2).incrScore(4);
-                            break;
-                    }
+        if (s.is_invincible && s.tour_invincible_restant > 0) {
+            s.tour_invincible_restant--;
+            if (s.tour_invincible_restant == 0)
+                s.is_invincible = false;
+        }
+
+        // Déplacer le serpent selon sa stratégie
+        s.moveAgent(s.strategie.direction_choisie(this), carte.getSize_x(), carte.getSize_y());
+    }
+
+    // Gérer les collisions et interactions avec les objets
+    for (Snake s : new ArrayList<>(snake_liste)) {
+        Position tete = s.position.get(0);
+
+        // Vérifier collision avec les murs
+        if (carte.getWalls()[tete.getX()][tete.getY()] && !s.is_invincible) {
+            snake_liste.remove(s);
+            continue;
+        }
+
+        // Vérifier collision avec les items
+        for (Item item : new ArrayList<>(item_liste)) {
+            if (item.x == tete.getX() && item.y == tete.getY()) {
+                switch (item.itemType) {
+                    case APPLE:
+                        s.augmenter_taille();
+                        s.incrScore(1);
+                        item_liste.remove(item);
+                        break;
+                    case BOX:
+                        if (Math.random() < 0.5) {
+                            item.itemType = ItemType.SICK_BALL;
+                            s.incrScore(-3);
+                        } else {
+                            item.itemType = ItemType.INVINCIBILITY_BALL;
+                            s.incrScore(5);
+                        }
+                        break;
+                    case SICK_BALL:
+                        s.is_sick = true;
+                        s.tour_malade_restant = 20;
+                        item_liste.remove(item);
+                        s.incrScore(-2);
+                        break;
+                    case INVINCIBILITY_BALL:
+                        s.is_invincible = true;
+                        s.tour_invincible_restant = 20;
+                        item_liste.remove(item);
+                        s.incrScore(4);
+                        break;
                 }
             }
-            cpt++;
         }
-    
+        }
+
         // Vérifier si des serpents sont morts
         agent_mort();
-    
+
         // Ajouter aléatoirement de nouveaux items
         if (Math.random() < pitem) {
             Position pos = genererPositionLibre();
@@ -556,56 +610,67 @@ private void serializeGameState() {
                 item_liste.add(new Item(pos.getX(), pos.getY(), ItemType.APPLE));
             }
         }
-    
+
         // Vérifier si le jeu doit continuer
         if (liste_snake_vide()) {
             gameOver();
         }
-    
+
+        for(Snake s : snake_liste){
+            System.out.println("real snake end " + s.toString());
+        }
+        for(Item i : item_liste){
+            System.out.println("real item end " + i.toString());
+        }
+        for(Snake s : gsSnakeList){
+            System.out.println("gs snake end " + s.toString());
+        }
+
         // Sérialiser et envoyer l'état du jeu
         serializeGameState();
     }
-    
+
     @Override
-public String toString() {
-    StringBuilder sb = new StringBuilder();
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
 
-    // Informations générales sur le jeu
-    sb.append("État du Jeu :\n");
-    sb.append("Le jeu continue : ").append(gameContinue).append("\n");
-    sb.append("Probabilité apparition item : ").append(pitem).append("\n");
+        // Informations générales sur le jeu
+        sb.append("État du Jeu :\n");
+        sb.append("Le jeu continue : ").append(gameContinue).append("\n");
+        sb.append("Probabilité apparition item : ").append(pitem).append("\n");
 
-    // Informations sur la carte (dimensions)
-    sb.append("Dimensions de la carte : ").append(carte.getSize_x()).append(" x ").append(carte.getSize_y()).append("\n");
+        // Informations sur la carte (dimensions)
+        sb.append("Dimensions de la carte : ").append(carte.getSize_x()).append(" x ").append(carte.getSize_y())
+                .append("\n");
 
-    // Liste des serpents
-    sb.append("Serpents :\n");
-    for (Snake snake : snake_liste) {
-        sb.append("  Serpent ").append(snake.getCouleur()).append(" (").append(snake.couleur).append(") :\n");
-        sb.append("    Taille : ").append(snake.position.size()).append("\n");
-        sb.append("    Score : ").append(snake.score).append("\n");
-        sb.append("    Invincible : ").append(snake.is_invincible).append("\n");
-        sb.append("    Malade : ").append(snake.is_sick).append("\n");
-        sb.append("    Position : ").append(snake.position.get(0).getX()).append(", ").append(snake.position.get(0).getY()).append("\n");
+        // Liste des serpents
+        sb.append("Serpents :\n");
+        for (Snake snake : snake_liste) {
+            sb.append("  Serpent ").append(snake.getCouleur()).append(" (").append(snake.couleur).append(") :\n");
+            sb.append("    Taille : ").append(snake.position.size()).append("\n");
+            sb.append("    Score : ").append(snake.score).append("\n");
+            sb.append("    Invincible : ").append(snake.is_invincible).append("\n");
+            sb.append("    Malade : ").append(snake.is_sick).append("\n");
+            sb.append("    Position : ").append(snake.position.get(0).getX()).append(", ")
+                    .append(snake.position.get(0).getY()).append("\n");
+        }
+
+        // Liste des items
+        sb.append("Items :\n");
+        for (Item item : item_liste) {
+            sb.append("  Item (").append(item.itemType).append(") : ");
+            sb.append("Position : ").append(item.x).append(", ").append(item.y).append("\n");
+        }
+
+        // Informations sur l'état de la partie (gameOver)
+        sb.append("État du jeu : ");
+        if (gameContinue) {
+            sb.append("En cours\n");
+        } else {
+            sb.append("Terminé\n");
+        }
+
+        return sb.toString();
     }
-
-    // Liste des items
-    sb.append("Items :\n");
-    for (Item item : item_liste) {
-        sb.append("  Item (").append(item.itemType).append(") : ");
-        sb.append("Position : ").append(item.x).append(", ").append(item.y).append("\n");
-    }
-
-    // Informations sur l'état de la partie (gameOver)
-    sb.append("État du jeu : ");
-    if (gameContinue) {
-        sb.append("En cours\n");
-    } else {
-        sb.append("Terminé\n");
-    }
-
-    return sb.toString();
-}
-
 
 }

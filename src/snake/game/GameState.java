@@ -18,7 +18,7 @@ public class GameState {
     private double pitem;
     private boolean gameContinue;
     private List<FeaturesSnake> featuresSnakes;
-    private List<Item> items;
+    //private List<Item> items;
 
 
     public GameState() {}
@@ -32,7 +32,14 @@ public class GameState {
     public void setTime(int time) { this.time = time; }
 
     public List<Snake> getSnake_liste() { return snake_liste; }
-    public void setSnake_liste(List<Snake> snake_liste) { this.snake_liste = snake_liste; }
+    public void setSnake_liste(List<Snake> snake_liste) {
+        this.snake_liste = snake_liste;
+        if (snake_liste != null && snake_liste.size() >= 2) {
+            this.snake1 = snake_liste.get(0);
+            this.snake2 = snake_liste.get(1);
+        }
+    }
+    
 
     public List<Item> getItem_liste() { return item_liste; }
     public void setItem_liste(List<Item> item_liste) { this.item_liste = item_liste; }
@@ -58,10 +65,10 @@ public class GameState {
     public void setSnake1(Snake snake1) { this.snake1 = snake1; }
 
     public Snake getSnake2() { return snake2; }
-    public void setSnake2(Snake snake1) { this.snake2 = snake1; }
+    public void setSnake2(Snake snake2) { this.snake2 = snake2; }
 
-    public List<Item> getItems() { return items; }
-    public void setItems(List<Item> items) { this.items = items; }
+    /*public List<Item> getItems() { return items; }
+    public void setItems(List<Item> items) { this.items = items; }*/
     
     // Sérialisation JSON
     public String toJson() throws Exception {

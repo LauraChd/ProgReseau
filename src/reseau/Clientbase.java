@@ -53,7 +53,8 @@ public class Clientbase {
                     if(message.contains("ETATINIT")){
                         String gameStateJSON = message.split("ETATINIT")[1];
                         try {
-                            GameState.fromJson(gameStateJSON);
+                            GameState gState = GameState.fromJson(gameStateJSON);
+                            System.out.println();
                             snakeGame.updateGameFromGameState(gState);
                         } catch (Exception e) {
                             // TODO Auto-generated catch block

@@ -41,5 +41,10 @@ public class Item {
 		this.itemType = itemType;
 	}
 
+	@Override
+	public String toString(){
+		return getItemType().toString() + " " + getX() + " " + getY();
+	}
+
 	
 }

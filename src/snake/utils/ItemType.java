@@ -9,4 +9,8 @@ public enum ItemType {
     public String toValue() {
         return name();  
     }
+
+    public String toString(){
+        return name();
+    }
 }

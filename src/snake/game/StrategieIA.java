@@ -199,5 +199,7 @@ public class StrategieIA implements Strategie {
 
         return false;
     }
+
+
     
 }

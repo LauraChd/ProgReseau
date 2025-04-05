@@ -40,6 +40,10 @@ public class StrategieClavier implements Strategie {
     public AgentAction direction_choisie(SnakeGame snakeGame) {
         return snake.agentAction;
     }
+
+
+
+    
     
 }
 
