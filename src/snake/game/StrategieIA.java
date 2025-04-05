@@ -6,37 +6,24 @@ import snake.utils.Position;
 
 public class StrategieIA implements Strategie {
 
-    Snake snake;
+    //Snake snake;
+    
+    private AgentAction currentAction = AgentAction.MOVE_DOWN;
+    //Snake snake;
     
     public StrategieIA(){}
-
-    public StrategieIA(Snake snake){
-        this.snake = snake;   
+    
+    @Override
+    public AgentAction getCurrentAction() {
+        return currentAction;
+    }
+    
+    @Override
+    public void setCurrentAction(AgentAction currentAction) {
+        this.currentAction = currentAction;
     }
 
-    @Override
-    public boolean isLegalMove(AgentAction agentAction) {
-        if(agentAction != null && snake.position.size() != 1){
-            if(agentAction == AgentAction.MOVE_UP && snake.agentAction != AgentAction.MOVE_DOWN){
-                return true;
-            }
-            else if(agentAction == AgentAction.MOVE_DOWN && snake.agentAction != AgentAction.MOVE_UP){
-                return true;
-            }
-            else if(agentAction == AgentAction.MOVE_LEFT && snake.agentAction != AgentAction.MOVE_RIGHT){
-                return true;
-            }
-            else if(agentAction == AgentAction.MOVE_RIGHT && snake.agentAction != AgentAction.MOVE_LEFT){
-                return true;
-            }
-            else return false;
-        }
-        else 
-            return true;
-        
-    }
-
-    @Override
+    /*@Override
     public AgentAction direction_choisie(SnakeGame snakeGame) {
         int teteX = snake.position.get(0).getX();
         int teteY = snake.position.get(0).getY();
@@ -168,7 +155,7 @@ public class StrategieIA implements Strategie {
 
         snake.agentAction = meilleure_action;
         return meilleure_action;
-    }
+    }*/
 
 
     public int calculateDistance_sans_mur(int x1, int y1, int x2, int y2,SnakeGame snakeGame) {

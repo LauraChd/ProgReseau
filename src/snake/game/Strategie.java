@@ -13,8 +13,10 @@ import snake.utils.AgentAction;
 })
 
 public interface Strategie {
-    public boolean isLegalMove(AgentAction agentAction);
-    public AgentAction direction_choisie(SnakeGame snakeGame);
+    //public boolean isLegalMove(AgentAction agentAction);
+    //public AgentAction direction_choisie(SnakeGame snakeGame);
     /*public Snake getSnake();
     public void setSnake(Snake snake);*/
+    public abstract AgentAction getCurrentAction();
+    public abstract void setCurrentAction(AgentAction action);
 }

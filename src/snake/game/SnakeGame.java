@@ -193,7 +193,7 @@ public class SnakeGame extends Game implements KeyListener {
             if (s.tour_invincible_restant > 0)
                 s.tour_invincible_restant--;
 
-            s.moveAgent(s.strategie.direction_choisie(this), carte.getSize_x(), carte.getSize_y());
+            s.moveAgent(s.getStrategie().getCurrentAction(), carte.getSize_x(), carte.getSize_y());
 
         }
         agent_mort();
@@ -309,19 +309,19 @@ public class SnakeGame extends Game implements KeyListener {
 
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_NUMPAD8:
-                        if (s.strategie.isLegalMove(AgentAction.MOVE_UP))
+                        if (s.isLegalMove(AgentAction.MOVE_UP))
                             s.agentAction = AgentAction.MOVE_UP;
                         break;
                     case KeyEvent.VK_NUMPAD5:
-                        if (s.strategie.isLegalMove(AgentAction.MOVE_DOWN))
+                        if (s.isLegalMove(AgentAction.MOVE_DOWN))
                             s.agentAction = AgentAction.MOVE_DOWN;
                         break;
                     case KeyEvent.VK_NUMPAD4:
-                        if (s.strategie.isLegalMove(AgentAction.MOVE_LEFT))
+                        if (s.isLegalMove(AgentAction.MOVE_LEFT))
                             s.agentAction = AgentAction.MOVE_LEFT;
                         break;
                     case KeyEvent.VK_NUMPAD6:
-                        if (s.strategie.isLegalMove(AgentAction.MOVE_RIGHT))
+                        if (s.isLegalMove(AgentAction.MOVE_RIGHT))
                             s.agentAction = AgentAction.MOVE_RIGHT;
                         break;
                     default:
@@ -403,7 +403,7 @@ public class SnakeGame extends Game implements KeyListener {
             }
 
             // Déplacer le serpent selon sa stratégie
-            s.moveAgent(s.strategie.direction_choisie(this), carte.getSize_x(), carte.getSize_y());
+            s.moveAgent(s.getStrategie().getCurrentAction(), carte.getSize_x(), carte.getSize_y());
         }
 
         // Gérer les collisions et interactions avec les objets
@@ -552,7 +552,7 @@ public class SnakeGame extends Game implements KeyListener {
         }
 
         // Déplacer le serpent selon sa stratégie
-        s.moveAgent(s.strategie.direction_choisie(this), carte.getSize_x(), carte.getSize_y());
+        s.moveAgent(s.getStrategie().getCurrentAction(), carte.getSize_x(), carte.getSize_y());
     }
 
     // Gérer les collisions et interactions avec les objets

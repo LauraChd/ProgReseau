@@ -37,6 +37,29 @@ public class Snake {
         this.score = 0;
     }
 
+    public boolean isLegalMove(AgentAction agentAction) {
+
+        if(agentAction != null && this.position.size() > 1){
+            if(agentAction == AgentAction.MOVE_UP && this.agentAction != AgentAction.MOVE_DOWN){
+                return true;
+            }
+            else if(agentAction == AgentAction.MOVE_DOWN && this.agentAction != AgentAction.MOVE_UP){
+                return true;
+            }
+            else if(agentAction == AgentAction.MOVE_LEFT && this.agentAction != AgentAction.MOVE_RIGHT){
+                return true;
+            }
+            else if(agentAction == AgentAction.MOVE_RIGHT && this.agentAction != AgentAction.MOVE_LEFT){
+                return true;
+            }
+            
+            else return false;
+        }
+        else 
+            return true;
+        
+    }
+
     public int getScore(){
         return score;
     }
@@ -126,7 +149,7 @@ public class Snake {
 
     public void moveAgent(AgentAction agentAction,int carteX,int carteY) {
 
-        if (strategie.isLegalMove(agentAction)) {
+        if (this.isLegalMove(agentAction)) {
             this.agentAction = agentAction;
         }
             

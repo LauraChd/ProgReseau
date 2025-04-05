@@ -1,18 +1,19 @@
 {
-  "turn" : 207,
+  "turn" : 25,
   "time" : 1000,
   "snake_liste" : [ {
     "type" : "Snake",
     "score" : 0,
     "taille" : 1,
     "position" : [ {
-      "x" : 13,
-      "y" : 2
+      "x" : 4,
+      "y" : 6
     } ],
     "couleur" : "Green",
-    "agentAction" : "MOVE_RIGHT",
+    "agentAction" : "MOVE_DOWN",
     "strategie" : {
-      "type" : "StrategieClavier"
+      "type" : "StrategieClavier",
+      "currentAction" : "MOVE_DOWN"
     },
     "is_invincible" : false,
     "is_sick" : false,
@@ -23,13 +24,14 @@
     "score" : 0,
     "taille" : 1,
     "position" : [ {
-      "x" : 4,
-      "y" : 8
+      "x" : 17,
+      "y" : 1
     } ],
     "couleur" : "Red",
-    "agentAction" : "MOVE_RIGHT",
+    "agentAction" : "MOVE_DOWN",
     "strategie" : {
-      "type" : "StrategieClavier"
+      "type" : "StrategieClavier",
+      "currentAction" : "MOVE_DOWN"
     },
     "is_invincible" : false,
     "is_sick" : false,
@@ -42,14 +44,14 @@
     "itemType" : "APPLE"
   } ],
   "carte" : {
-    "filename" : "src/snake/layouts/arenaNoWall.lay",
+    "filename" : "src/snake/layouts/arenaNoWall2.lay",
     "size_x" : 22,
     "size_y" : 11,
     "walls" : [ [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ], [ false, false, false, false, false, false, false, false, false, false, false ] ],
     "start_snakes" : [ {
       "positions" : [ {
-        "x" : 4,
-        "y" : 2
+        "x" : 15,
+        "y" : 5
       } ],
       "lastAction" : "MOVE_DOWN",
       "colorSnake" : "Green",
@@ -57,7 +59,7 @@
       "sick" : false
     }, {
       "positions" : [ {
-        "x" : 17,
+        "x" : 2,
         "y" : 8
       } ],
       "lastAction" : "MOVE_DOWN",
@@ -66,8 +68,8 @@
       "sick" : false
     } ],
     "start_items" : [ {
-      "x" : 19,
-      "y" : 1,
+      "x" : 8,
+      "y" : 8,
       "itemType" : "APPLE"
     } ],
     "colorSnake" : [ "Green", "Red" ]
@@ -76,19 +78,19 @@
   "gameContinue" : true,
   "featuresSnakes" : [ {
     "positions" : [ {
-      "x" : 13,
-      "y" : 2
+      "x" : 4,
+      "y" : 6
     } ],
-    "lastAction" : "MOVE_RIGHT",
+    "lastAction" : "MOVE_DOWN",
     "colorSnake" : "Green",
     "invincible" : false,
     "sick" : false
   }, {
     "positions" : [ {
-      "x" : 4,
-      "y" : 8
+      "x" : 17,
+      "y" : 1
     } ],
-    "lastAction" : "MOVE_RIGHT",
+    "lastAction" : "MOVE_DOWN",
     "colorSnake" : "Red",
     "invincible" : false,
     "sick" : false
