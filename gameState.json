@@ -1,19 +1,18 @@
 {
-  "turn" : 25,
+  "turn" : 21,
   "time" : 1000,
   "snake_liste" : [ {
     "type" : "Snake",
     "score" : 0,
     "taille" : 1,
     "position" : [ {
-      "x" : 4,
-      "y" : 6
+      "x" : 12,
+      "y" : 4
     } ],
     "couleur" : "Green",
-    "agentAction" : "MOVE_DOWN",
+    "agentAction" : "MOVE_LEFT",
     "strategie" : {
-      "type" : "StrategieClavier",
-      "currentAction" : "MOVE_DOWN"
+      "type" : "StrategieIA"
     },
     "is_invincible" : false,
     "is_sick" : false,
@@ -24,14 +23,13 @@
     "score" : 0,
     "taille" : 1,
     "position" : [ {
-      "x" : 17,
-      "y" : 1
+      "x" : 9,
+      "y" : 5
     } ],
     "couleur" : "Red",
-    "agentAction" : "MOVE_DOWN",
+    "agentAction" : "MOVE_RIGHT",
     "strategie" : {
-      "type" : "StrategieClavier",
-      "currentAction" : "MOVE_DOWN"
+      "type" : "StrategieIA"
     },
     "is_invincible" : false,
     "is_sick" : false,
@@ -41,6 +39,26 @@
   "item_liste" : [ {
     "x" : 19,
     "y" : 1,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 10,
+    "y" : 9,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 13,
+    "y" : 5,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 0,
+    "y" : 9,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 0,
+    "y" : 3,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 11,
+    "y" : 8,
     "itemType" : "APPLE"
   } ],
   "carte" : {
@@ -78,19 +96,19 @@
   "gameContinue" : true,
   "featuresSnakes" : [ {
     "positions" : [ {
-      "x" : 4,
-      "y" : 6
+      "x" : 12,
+      "y" : 4
     } ],
-    "lastAction" : "MOVE_DOWN",
+    "lastAction" : "MOVE_LEFT",
     "colorSnake" : "Green",
     "invincible" : false,
     "sick" : false
   }, {
     "positions" : [ {
-      "x" : 17,
-      "y" : 1
+      "x" : 9,
+      "y" : 5
     } ],
-    "lastAction" : "MOVE_DOWN",
+    "lastAction" : "MOVE_RIGHT",
     "colorSnake" : "Red",
     "invincible" : false,
     "sick" : false
@@ -98,6 +116,26 @@
   "featuresItems" : [ {
     "x" : 19,
     "y" : 1,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 10,
+    "y" : 9,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 13,
+    "y" : 5,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 0,
+    "y" : 9,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 0,
+    "y" : 3,
+    "itemType" : "APPLE"
+  }, {
+    "x" : 11,
+    "y" : 8,
     "itemType" : "APPLE"
   } ]
 }

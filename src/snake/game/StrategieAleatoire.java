@@ -10,8 +10,8 @@ public class StrategieAleatoire implements Strategie {
     public StrategieAleatoire(){}
     
     @Override
-    public AgentAction getCurrentAction() {
-        return currentAction;
+    public AgentAction getCurrentAction(Snake snake, SnakeGame game) {
+        return this.currentAction;
     }
     
     @Override

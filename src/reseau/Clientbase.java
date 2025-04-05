@@ -34,9 +34,10 @@ public class Clientbase {
             BufferedReader entree = new BufferedReader(new InputStreamReader(so.getInputStream()));
             Scanner scanner = new Scanner(System.in);
             System.out.println("Connexion réussie au serveur " + serveur + " sur le port " + port);
+            ControllerSnakeGame controllerSnakeGame = null;
             try {
                 snakeGame = new SnakeGame(10000, new InputMap(layoutPath));
-                ControllerSnakeGame controllerSnakeGame = new ControllerSnakeGame(snakeGame, layoutPath);
+                controllerSnakeGame = new ControllerSnakeGame(snakeGame, layoutPath);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -50,7 +51,7 @@ public class Clientbase {
                 String message = entree.readLine();
                 if (message != null) {
                     System.out.println(message);
-                    if(message.contains("ETATINIT")){
+                    if(message.contains("ETATINIT") ){ //soit newtstae ici, soit dans autre if
                         String gameStateJSON = message.split("ETATINIT")[1];
                         try {
                             GameState gState = GameState.fromJson(gameStateJSON);
@@ -65,6 +66,22 @@ public class Clientbase {
                         end = true;
                         System.out.println("Fermeture de la communication...");
                         so.close();
+                    }
+                    if(message.contains("NEWSTATE")){
+                        String gameStateJSON = message.split("NEWSTATE")[1];
+                        System.out.println(gameStateJSON);
+                        try {
+                            GameState gState = GameState.fromJson(gameStateJSON);
+                            System.out.println();
+                            snakeGame.updateGameFromGameState(gState);
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    if(message.contains("PLAY")){
+                        if(controllerSnakeGame != null)
+                            controllerSnakeGame.getViewCommand().getEtat_du_jeu().play();
                     }
                 }
             }

@@ -23,6 +23,13 @@ public class ControllerSnakeGame extends AbstractController {
     @SuppressWarnings("unused")
     private ViewCommand viewCommand;
     private String currentLayoutPath;
+    private ViewSnakeGame viewSnakeGame;
+
+    
+
+    public ViewCommand getViewCommand() {
+        return viewCommand;
+    }
 
     public ControllerSnakeGame(SnakeGame snakeGame, String layoutPath) {
         super(snakeGame);
@@ -54,7 +61,7 @@ public class ControllerSnakeGame extends AbstractController {
             );
 
             
-            ViewSnakeGame viewSnakeGame = new ViewSnakeGame(panelSnakeGame, snakeGame);
+            viewSnakeGame = new ViewSnakeGame(panelSnakeGame, snakeGame);
 
             frame = new JFrame("Snake Game");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -133,4 +140,10 @@ public class ControllerSnakeGame extends AbstractController {
         }
         return layouts;
     }
+
+    public ViewSnakeGame getViewSnakeGame() {
+        return viewSnakeGame;
+    }
+
+    
 }

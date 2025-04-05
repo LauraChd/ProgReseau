@@ -17,6 +17,7 @@ public interface Strategie {
     //public AgentAction direction_choisie(SnakeGame snakeGame);
     /*public Snake getSnake();
     public void setSnake(Snake snake);*/
-    public abstract AgentAction getCurrentAction();
-    public abstract void setCurrentAction(AgentAction action);
+    public AgentAction getCurrentAction(Snake snake, SnakeGame game);
+    
+    public void setCurrentAction(AgentAction currentAction);
 }

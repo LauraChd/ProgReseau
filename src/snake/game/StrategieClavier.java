@@ -10,8 +10,8 @@ public class StrategieClavier implements Strategie {
     public StrategieClavier(){}
     
     @Override
-    public AgentAction getCurrentAction() {
-        return currentAction;
+    public AgentAction getCurrentAction(Snake snake, SnakeGame game) {
+        return this.currentAction;
     }
     
     @Override

@@ -101,8 +101,8 @@ public class SnakeGame extends Game implements KeyListener {
              * snake_liste.add(snakeFactory.creerAgentHumain(s.getPositions().get(0).getX(),
              * s.getPositions().get(0).getY(), s.getColorSnake()));
              */
-            snake_liste.add(snakeFactory.creerAgentHumain(s.getPositions().get(0).getX(),
-                    s.getPositions().get(0).getY(), s.getColorSnake()));
+            //snake_liste.add(snakeFactory.creerAgentHumain(s.getPositions().get(0).getX(),s.getPositions().get(0).getY(), s.getColorSnake()));
+            snake_liste.add(snakeFactory.creerAgentIA(s.getPositions().get(0).getX(),s.getPositions().get(0).getY(), s.getColorSnake()));
         }
 
         for (FeaturesItem i : carte.getStart_items()) {
@@ -193,7 +193,7 @@ public class SnakeGame extends Game implements KeyListener {
             if (s.tour_invincible_restant > 0)
                 s.tour_invincible_restant--;
 
-            s.moveAgent(s.getStrategie().getCurrentAction(), carte.getSize_x(), carte.getSize_y());
+            s.moveAgent(s.getStrategie().getCurrentAction(s, this), carte.getSize_x(), carte.getSize_y());
 
         }
         agent_mort();
@@ -209,7 +209,7 @@ public class SnakeGame extends Game implements KeyListener {
 
         try {
             mapper.writeValue(new File("gameState.json"), this);
-            System.out.println("État du jeu sauvegardé dans gameState.json");
+            //System.out.println("État du jeu sauvegardé dans gameState.json");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -403,7 +403,7 @@ public class SnakeGame extends Game implements KeyListener {
             }
 
             // Déplacer le serpent selon sa stratégie
-            s.moveAgent(s.getStrategie().getCurrentAction(), carte.getSize_x(), carte.getSize_y());
+            s.moveAgent(s.getStrategie().getCurrentAction(s, this), carte.getSize_x(), carte.getSize_y());
         }
 
         // Gérer les collisions et interactions avec les objets
@@ -552,7 +552,7 @@ public class SnakeGame extends Game implements KeyListener {
         }
 
         // Déplacer le serpent selon sa stratégie
-        s.moveAgent(s.getStrategie().getCurrentAction(), carte.getSize_x(), carte.getSize_y());
+        s.moveAgent(s.getStrategie().getCurrentAction(s, this), carte.getSize_x(), carte.getSize_y());
     }
 
     // Gérer les collisions et interactions avec les objets
@@ -671,6 +671,169 @@ public class SnakeGame extends Game implements KeyListener {
         }
 
         return sb.toString();
+    }
+
+    public AgentAction direction_choisie(Snake snake) {
+        int teteX = snake.position.get(0).getX();
+        int teteY = snake.position.get(0).getY();
+
+        int pommeX = 0;
+        int pommeY = 0;
+
+        for(Item item : this.item_liste){
+            if (item.itemType == ItemType.APPLE){
+                pommeX = item.x;
+                pommeY = item.y;
+            }
+        }
+
+        //actions possibles et leur distance de la pomme
+        AgentAction[] actions = {AgentAction.MOVE_UP, AgentAction.MOVE_DOWN, AgentAction.MOVE_LEFT, AgentAction.MOVE_RIGHT};
+        int minDistance = this.carte.getSize_x()*this.carte.getSize_y();
+        AgentAction meilleure_action = snake.agentAction;//direction actuelle par défaut
+
+        for (AgentAction action : actions) {
+            int suivantX = teteX;
+            int suivantY = teteY;
+
+            //prochaine position
+            if(!mur_dans_la_carte()){
+                switch (action) {
+                    case MOVE_UP:
+                        suivantY -= 1;
+                        if (suivantY < 0) suivantY = this.carte.getSize_y() - 1;
+                        break;
+                    case MOVE_DOWN:
+                        suivantY += 1;
+                        if (suivantY >= this.carte.getSize_y()) suivantY = 0;
+                        break;
+                    case MOVE_LEFT:
+                        suivantX -= 1;
+                        if (suivantX < 0) suivantX = this.carte.getSize_x() - 1;
+                        break;
+                    case MOVE_RIGHT:
+                        suivantX += 1;
+                        if (suivantX >= this.carte.getSize_x()) suivantX = 0;
+                        break;
+                }
+            }
+            else {
+                switch (action) {
+                    case MOVE_UP:
+                        suivantY -= 1;
+                        break;
+                    case MOVE_DOWN:
+                        suivantY += 1;
+                        break;
+                    case MOVE_LEFT:
+                        suivantX -= 1;
+                        break;
+                    case MOVE_RIGHT:
+                        suivantX += 1;
+                        break;
+                }
+            }
+
+            if(!snake.isLegalMove(action)) continue;
+
+            if (this.carte.getWalls()[suivantX][suivantY]) {
+                continue;
+            }
+
+            //collision avec autre snake plus long
+            boolean autre_snake_Collision = false;
+            for(Snake s : this.snake_liste){
+                if((s.taille >= snake.taille)&&(s.couleur != snake.couleur)&&(!s.is_invincible)){
+                    for (int i = 0; i < s.position.size()-1; i++) {//commence à 1 pour ignorer la tête
+                        Position bodyPart = s.position.get(i);
+                        if (bodyPart.getX() == suivantX && bodyPart.getY() == suivantY) {
+                            autre_snake_Collision = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (autre_snake_Collision) {
+                continue;
+            }
+
+
+
+            //collision avec le corps
+            boolean isBodyCollision = false;
+            for (int i = 1; i < snake.position.size(); i++) {//commence à 1 pour ignorer la tête
+                Position bodyPart = snake.position.get(i);
+                if (bodyPart.getX() == suivantX && bodyPart.getY() == suivantY) {
+                    isBodyCollision = true;
+                    break;
+                }
+            }
+            if (isBodyCollision) {
+                continue;
+            }
+
+            int distance = this.carte.getSize_x()*this.carte.getSize_y();
+            if(mur_dans_la_carte())
+                distance = calculateDistance_avec_mur(suivantX, suivantY, pommeX, pommeY);
+            else
+                distance = calculateDistance_sans_mur(suivantX, suivantY, pommeX, pommeY);
+
+            if ((distance <= minDistance) && 
+                (!snake.is_sick || (distance > snake.tour_malade_restant || minDistance == this.carte.getSize_x()*this.carte.getSize_y()))) {
+                boolean prochain_boule_jaune = false;
+                for(Item item : this.item_liste){
+                    if(item.itemType == ItemType.SICK_BALL){
+                        if((suivantX == item.x)&&(suivantY == item.y)){
+                            prochain_boule_jaune = true;
+                        }
+                    }
+                }
+
+                if(((!snake.is_sick)&&(20 > distance)&& prochain_boule_jaune)&&( minDistance != this.carte.getSize_x()*this.carte.getSize_y())){
+                    //System.out.println("boule jaune ne pas aller");
+                }
+                else{
+                    minDistance = distance;
+                    meilleure_action = action;
+                }
+            }
+
+
+        }
+
+
+        snake.agentAction = meilleure_action;
+        return meilleure_action;
+    }
+
+
+    public int calculateDistance_sans_mur(int x1, int y1, int x2, int y2) {
+        int dx = Math.min(Math.abs(x2 - x1), this.carte.getSize_x() - Math.abs(x2 - x1));
+        int dy = Math.min(Math.abs(y2 - y1), this.carte.getSize_y() - Math.abs(y2 - y1));
+        return dx + dy;
+    }
+
+    public int calculateDistance_avec_mur(int x1, int y1, int x2, int y2) {
+        return (int) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+
+    public boolean mur_dans_la_carte(){
+        boolean[][] walls = this.carte.getWalls();
+    
+        if (walls == null) {
+            return false;
+        }
+
+        for (int i = 0; i < walls.length; i++) {
+            for (int j = 0; j < walls[i].length; j++) {
+                if (walls[i][j]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 }

@@ -34,7 +34,7 @@ public class ViewSnakeGame extends JPanel implements Observer {
 
     @Override
     public void update(Observable game, Object snakegame) {
-        System.out.println("méthode update");
+        //System.out.println("méthode update");
         updateView(((SnakeGame)game).getFeaturesSnakes(),((SnakeGame)game).getFeaturesItems());
     }
 
@@ -46,4 +46,7 @@ public class ViewSnakeGame extends JPanel implements Observer {
         this.revalidate();
         this.repaint();
     }
+
+
+    
 }

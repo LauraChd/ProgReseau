@@ -14,8 +14,8 @@ public class StrategieIA implements Strategie {
     public StrategieIA(){}
     
     @Override
-    public AgentAction getCurrentAction() {
-        return currentAction;
+    public AgentAction getCurrentAction(Snake snake, SnakeGame game) {
+        return game.direction_choisie(snake);
     }
     
     @Override

@@ -24,6 +24,7 @@ public class ViewCommand extends JPanel implements java.util.Observer{//la vue =
     JButton button2;
     JButton button3;
     JButton button4;
+    JFrame jFrame;
     
     public ViewCommand(AbstractController abstractController, Observable game){
         this.abstractController = abstractController;
@@ -31,7 +32,7 @@ public class ViewCommand extends JPanel implements java.util.Observer{//la vue =
         this.game = (Game) game;
         etat_du_jeu = new EtatInitial(this);
 
-        JFrame jFrame = new JFrame();
+        jFrame = new JFrame();
         jFrame.setTitle("Commande");
         jFrame.setSize(new Dimension(1000, 450));
         Dimension windowSize = jFrame.getSize();
@@ -144,5 +145,13 @@ public class ViewCommand extends JPanel implements java.util.Observer{//la vue =
         button4.setEnabled(b4);
     }
 
+    public Etat getEtat_du_jeu() {
+        return etat_du_jeu;
+    }
+
+    public void fermerFenetre() {
+        jFrame.dispose();
+    }
+    
 
 }
